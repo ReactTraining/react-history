@@ -16,6 +16,7 @@
     "build-min": "webpack -p modules/index.js umd/react-history.min.js",
     "build": "node ./scripts/build.js",
     "prepublish": "node ./scripts/build.js",
+    "release": "node ./scripts/release.js",
     "test": "npm run lint && karma start",
     "lint": "eslint modules"
   },
