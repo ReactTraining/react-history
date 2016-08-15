@@ -67,5 +67,9 @@ describe('BrowserHistory', () => {
       const children = RenderTestSequences.BlocksAPush(done)
       render(<BrowserHistory children={children}/>, node)
     })
+
+    it('blocks the back button (or go(-1))')
+
+    it('blocks the forward button (or go(1))')
   })
 })

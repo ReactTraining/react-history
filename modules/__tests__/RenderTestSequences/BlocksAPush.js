@@ -13,7 +13,7 @@ export default (done) => {
 
       return (
         <div>
-          <Block message={(info, callback) => callback(false)}/>
+          <Block message={(_, callback) => callback(false)}/>
           <Push path="/hello"/>
         </div>
       )

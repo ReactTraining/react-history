@@ -21,7 +21,7 @@ export default (done) => {
 
       return (
         <div>
-          <Block message={(info, callback) => callback(false)}/>
+          <Block message={(_, callback) => callback(false)}/>
           <Pop/>
         </div>
       )
