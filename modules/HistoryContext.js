@@ -3,8 +3,8 @@ import React, { PropTypes } from 'react'
 import { locationsAreEqual } from './LocationUtils'
 import {
   action as actionType,
-  historyLocation as historyLocationType,
-  historyContext as historyContextType
+  historyContext as historyContextType,
+  location as locationType
 } from './PropTypes'
 
 /**
@@ -14,7 +14,7 @@ class HistoryContext extends React.Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     action: actionType.isRequired,
-    location: historyLocationType.isRequired,
+    location: locationType.isRequired,
     confirm: PropTypes.func,
     push: PropTypes.func.isRequired,
     replace: PropTypes.func.isRequired,
