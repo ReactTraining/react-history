@@ -1,6 +1,6 @@
 import React from 'react'
 import expect from 'expect'
-import { Push, Pop, Block } from '../../HistoryActions'
+import { Push, Pop, Prompt } from '../../HistoryActions'
 import createRenderProp from './createRenderProp'
 
 export default (done) => {
@@ -21,7 +21,7 @@ export default (done) => {
 
       return (
         <div>
-          <Block message={(_, callback) => callback(false)}/>
+          <Prompt message={(_, callback) => callback(false)}/>
           <Pop/>
         </div>
       )

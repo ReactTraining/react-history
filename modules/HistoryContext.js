@@ -38,22 +38,22 @@ class HistoryContext extends React.Component {
         push,
         replace,
         go,
-        block: this.block
+        prompt: this.prompt
       }
     }
   }
 
-  block = (prompt) => {
+  prompt = (block) => {
     warning(
-      this.prompt == null,
-      'You should not render more than one <NavigationPrompt> at a time; previous ones will be overwritten'
+      this.block == null,
+      'You should not render more than one <Prompt> at a time; previous ones will be overwritten'
     )
 
-    this.prompt = prompt
+    this.block = block
 
     return () => {
-      if (this.prompt === prompt)
-        this.prompt = null
+      if (this.block === block)
+        this.block = null
     }
   }
 
@@ -71,6 +71,18 @@ class HistoryContext extends React.Component {
       action,
       location
     })
+  }
+
+  confirmTransition(action, location, callback) {
+    const block = this.block
+
+    if (typeof block === 'function') {
+      block({ action, location }, callback)
+    } else if (typeof block === 'string') {
+      this.props.confirm(block, callback)
+    } else {
+      callback(true)
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -97,18 +109,6 @@ class HistoryContext extends React.Component {
           }
         })
       }
-    }
-  }
-
-  confirmTransition(action, location, callback) {
-    const prompt = this.prompt
-
-    if (typeof prompt === 'function') {
-      prompt({ action, location }, callback)
-    } else if (typeof prompt === 'string') {
-      this.props.confirm(prompt, callback)
-    } else {
-      callback(true)
     }
   }
 

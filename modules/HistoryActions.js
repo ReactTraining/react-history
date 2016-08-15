@@ -49,7 +49,7 @@ Pop.defaultProps = {
   go: -1
 }
 
-export class Block extends React.Component {
+export class Prompt extends React.Component {
   static contextTypes = {
     history: historyContextType.isRequired
   }
@@ -62,7 +62,7 @@ export class Block extends React.Component {
   }
 
   componentWillMount() {
-    this.unblock = this.context.history.block(this.props.message)
+    this.unblock = this.context.history.prompt(this.props.message)
   }
 
   componentWillUnmount() {
