@@ -1,5 +1,6 @@
 export BlocksAPush from './BlocksAPush'
 export BlocksTheBackButton from './BlocksTheBackButton'
+export BlocksTheForwardButton from './BlocksTheForwardButton'
 export HashBangHashEncoding from './HashBangHashEncoding'
 export NoSlashHashEncoding from './NoSlashHashEncoding'
 export PopEmitsANewLocation from './PopEmitsANewLocation'
