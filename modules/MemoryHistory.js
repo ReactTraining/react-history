@@ -1,4 +1,5 @@
 import warning from 'warning'
+import invariant from 'invariant'
 import React, { PropTypes } from 'react'
 import HistoryContext from './HistoryContext'
 
@@ -33,82 +34,117 @@ class MemoryHistory extends React.Component {
     return Math.random().toString(36).substr(2, this.props.keyLength)
   }
 
+  handlePrompt = (prompt) => {
+    invariant(
+      typeof prompt === 'function',
+      'A <MemoryHistory> prompt must be a function'
+    )
+
+    warning(
+      this.prompt == null,
+      '<MemoryHistory> supports only one <Prompt> at a time'
+    )
+
+    this.prompt = prompt
+
+    return () => {
+      if (this.prompt === prompt)
+        this.prompt = null
+    }
+  }
+
+  confirmTransitionTo(action, location, callback) {
+    const prompt = this.prompt
+
+    if (typeof prompt === 'function') {
+      prompt({ action, location }, callback)
+    } else {
+      callback(true)
+    }
+  }
+
   handlePush = (path, state) => {
-    this.setState(prevState => {
-      const prevIndex = prevState.index
-      const entries = prevState.entries.slice(0)
+    const action = 'PUSH'
+    const key = this.createKey()
+    const location = {
+      path,
+      state,
+      key
+    }
 
-      const key = this.createKey()
-      const location = {
-        path,
-        state,
-        key
-      }
+    this.confirmTransitionTo(action, location, (ok) => {
+      if (!ok)
+        return
 
-      const nextIndex = prevIndex + 1
-      if (entries.length > nextIndex) {
-        entries.splice(nextIndex, entries.length - nextIndex, location)
-      } else {
-        entries.push(location)
-      }
+      this.setState(prevState => {
+        const prevIndex = prevState.index
+        const entries = prevState.entries.slice(0)
 
-      return {
-        prevIndex: prevState.index,
-        action: 'PUSH',
-        index: nextIndex,
-        entries
-      }
+        const nextIndex = prevIndex + 1
+        if (entries.length > nextIndex) {
+          entries.splice(nextIndex, entries.length - nextIndex, location)
+        } else {
+          entries.push(location)
+        }
+
+        return {
+          prevIndex: prevState.index,
+          action,
+          index: nextIndex,
+          entries
+        }
+      })
     })
   }
 
   handleReplace = (path, state) => {
-    this.setState(prevState => {
-      const prevIndex = prevState.index
-      const entries = prevState.entries.slice(0)
-      const key = this.createKey()
+    const action = 'REPLACE'
+    const key = this.createKey()
+    const location = {
+      path,
+      state,
+      key
+    }
 
-      entries[prevIndex] = {
-        path,
-        state,
-        key
-      }
+    this.confirmTransitionTo(action, location, (ok) => {
+      if (!ok)
+        return
 
-      return {
-        prevIndex: prevState.index,
-        action: 'REPLACE',
-        entries
-      }
+      this.setState(prevState => {
+        const prevIndex = prevState.index
+        const entries = prevState.entries.slice(0)
+
+        entries[prevIndex] = location
+
+        return {
+          prevIndex: prevState.index,
+          action,
+          entries
+        }
+      })
     })
   }
 
   handleGo = (n) => {
-    this.setState(prevState => {
-      const prevIndex = prevState.index
-      const nextIndex = clamp(prevIndex + n, 0, prevState.entries.length - 1)
+    const { index, entries } = this.state
+    const nextIndex = clamp(index + n, 0, entries.length - 1)
 
-      return {
-        prevIndex,
-        action: 'POP',
-        index: nextIndex
+    const action = 'POP'
+    const location = entries[nextIndex]
+
+    this.confirmTransitionTo(action, location, (ok) => {
+      if (ok) {
+        this.setState({
+          prevIndex: index,
+          action,
+          index: nextIndex
+        })
+      } else {
+        // Mimic the behavior of DOM histories by
+        // causing a render after a cancelled POP.
+        this.forceUpdate()
       }
     })
-  }
-
-  handleRevert = () => {
-    const { prevIndex } = this.state
-
-    if (prevIndex != null) {
-      this.setState({
-        prevIndex: null,
-        action: 'POP',
-        index: prevIndex
-      })
-    } else {
-      warning(
-        false,
-        '<MemoryHistory> cannot revert more than one entry'
-      )
-    }
   }
 
   componentWillMount() {
@@ -131,10 +167,10 @@ class MemoryHistory extends React.Component {
         children={children}
         action={action}
         location={location}
+        prompt={this.handlePrompt}
         push={this.handlePush}
         replace={this.handleReplace}
         go={this.handleGo}
-        revert={this.handleRevert}
       />
     )
   }

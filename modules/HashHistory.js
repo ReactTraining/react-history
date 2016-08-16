@@ -1,6 +1,7 @@
 import warning from 'warning'
+import invariant from 'invariant'
 import React, { PropTypes } from 'react'
-import DOMHistoryContext from './DOMHistoryContext'
+import HistoryContext from './HistoryContext'
 import {
   addEventListener,
   removeEventListener,
@@ -52,7 +53,7 @@ const replaceHashPath = (path) => {
 }
 
 /**
- * A history that uses the URL hash.
+ * A history that uses the URL hash and hashchange event.
  */
 class HashHistory extends React.Component {
   static propTypes = {
@@ -66,7 +67,8 @@ class HashHistory extends React.Component {
 
   state = {
     action: null,
-    location: null
+    location: null,
+    allPaths: null
   }
 
   decodePath(path) {
@@ -85,75 +87,118 @@ class HashHistory extends React.Component {
     }
   }
 
-  handleHashChange = () => {
-    const path = getHashPath()
-    const encodedPath = this.encodePath(path)
+  handlePrompt = (prompt) => {
+    invariant(
+      typeof prompt === 'function' || typeof prompt === 'string',
+      'A <HashHistory> prompt must be a function or a string'
+    )
 
-    if (path !== encodedPath) {
-      // Ensure we always have a properly-encoded hash.
-      replaceHashPath(encodedPath)
+    warning(
+      this.prompt == null,
+      '<HashHistory> supports only one <Prompt> at a time'
+    )
+
+    this.prompt = prompt
+
+    return () => {
+      if (this.prompt === prompt)
+        this.prompt = null
+    }
+  }
+
+  confirmTransitionTo(action, location, callback) {
+    const prompt = this.prompt
+
+    if (typeof prompt === 'function') {
+      prompt({ action, location }, callback)
+    } else if (typeof prompt === 'string') {
+      callback(window.confirm(prompt)) // eslint-disable-line no-alert
     } else {
-      const { location } = this.state
-      const nextLocation = this.createLocation()
-
-      if (locationsAreEqual(location, nextLocation))
-        return // A hashchange doesn't always == location change.
-
-      if (this.ignorePath === nextLocation.path)
-        return // Ignore this change; we already setState.
-
-      this.ignorePath = null
-
-      this.setState({
-        action: 'POP', // Best guess.
-        location: nextLocation
-      })
+      callback(true)
     }
   }
 
   handlePush = (path, state) => {
     warning(
       state === undefined,
-      '<HashHistory> cannot store state; it will be dropped'
+      '<HashHistory> cannot push state; it will be dropped'
     )
 
-    const encodedPath = this.encodePath(path)
-    const hashChanged = getHashPath() !== encodedPath
-
-    if (hashChanged) {
-      // We cannot tell if a hashchange was caused by a PUSH, so we'd
-      // rather setState here and ignore the hashchange. The caveat here
-      // is that other <HashHistory>s in the page will consider it a POP.
-      this.ignorePath = path
-      pushHashPath(encodedPath)
+    const action = 'PUSH'
+    const location = {
+      path
     }
 
-    this.setState({
-      action: 'PUSH',
-      location: { path }
+    this.confirmTransitionTo(action, location, (ok) => {
+      if (!ok)
+        return
+
+      const encodedPath = this.encodePath(path)
+      const hashChanged = getHashPath() !== encodedPath
+
+      if (hashChanged) {
+        // We cannot tell if a hashchange was caused by a PUSH, so we'd
+        // rather setState here and ignore the hashchange. The caveat here
+        // is that other <HashHistory>s in the page will consider it a POP.
+        this.ignorePath = path
+        pushHashPath(encodedPath)
+      }
+
+      this.setState(prevState => {
+        const prevPaths = prevState.allPaths
+        const prevIndex = prevPaths.lastIndexOf(prevState.location.path)
+
+        const allPaths = prevPaths.slice(0, prevIndex === -1 ? 0 : prevIndex + 1)
+        allPaths.push(location.path)
+
+        return {
+          action,
+          location,
+          allPaths
+        }
+      })
     })
   }
 
   handleReplace = (path, state) => {
     warning(
       state === undefined,
-      '<HashHistory> cannot store state; it will be dropped'
+      '<HashHistory> cannot replace state; it will be dropped'
     )
 
-    const encodedPath = this.encodePath(path)
-    const hashChanged = getHashPath() !== encodedPath
-
-    if (hashChanged) {
-      // We cannot tell if a hashchange was caused by a REPLACE, so we'd
-      // rather setState here and ignore the hashchange. The caveat here
-      // is that other <HashHistory>s in the page will consider it a POP.
-      this.ignorePath = path
-      replaceHashPath(encodedPath)
+    const action = 'REPLACE'
+    const location = {
+      path
     }
 
-    this.setState({
-      action: 'REPLACE',
-      location: { path }
+    this.confirmTransitionTo(action, location, (ok) => {
+      if (!ok)
+        return
+
+      const encodedPath = this.encodePath(path)
+      const hashChanged = getHashPath() !== encodedPath
+
+      if (hashChanged) {
+        // We cannot tell if a hashchange was caused by a REPLACE, so we'd
+        // rather setState here and ignore the hashchange. The caveat here
+        // is that other <HashHistory>s in the page will consider it a POP.
+        this.ignorePath = path
+        replaceHashPath(encodedPath)
+      }
+
+      this.setState(prevState => {
+        const allPaths = prevState.allPaths.slice(0)
+        const prevIndex = allPaths.indexOf(prevState.location.path)
+
+        if (prevIndex !== -1)
+          allPaths[prevIndex] = location.path
+
+        return {
+          action,
+          location,
+          allPaths
+        }
+      })
     })
   }
 
@@ -164,6 +209,69 @@ class HashHistory extends React.Component {
     )
 
     window.history.go(n)
+  }
+
+  handleHashChange = () => {
+    const path = getHashPath()
+    const encodedPath = this.encodePath(path)
+
+    if (path !== encodedPath) {
+      // Ensure we always have a properly-encoded hash.
+      replaceHashPath(encodedPath)
+    } else {
+      const action = 'POP'
+      const location = this.createLocation()
+      const prevLocation = this.state.location
+
+      if (!this.forceNextPop && locationsAreEqual(prevLocation, location))
+        return // A hashchange doesn't always == location change.
+
+      if (this.ignorePath === location.path)
+        return // Ignore this change; we already setState in push/replace.
+
+      this.ignorePath = null
+
+      if (this.forceNextPop) {
+        this.forceNextPop = false
+        this.forceUpdate()
+      } else {
+        this.confirmTransitionTo(action, location, (ok) => {
+          if (ok) {
+            this.setState({
+              action,
+              location
+            })
+          } else {
+            this.revertPop(location)
+          }
+        })
+      }
+    }
+  }
+
+  revertPop(popLocation) {
+    const { location, allPaths } = this.state
+
+    // TODO: We could probably make this more reliable by
+    // keeping a list of keys we've seen in sessionStorage.
+    // Instead, we just default to 0 for keys we don't know.
+
+    let toIndex = allPaths.lastIndexOf(location.path)
+
+    if (toIndex === -1)
+      toIndex = 0
+
+    let fromIndex = allPaths.lastIndexOf(popLocation.path)
+
+    if (fromIndex === -1)
+      fromIndex = 0
+
+    const delta = toIndex - fromIndex
+
+    if (delta) {
+      this.forceNextPop = true
+      window.history.go(delta)
+    }
   }
 
   componentWillMount() {
@@ -177,9 +285,12 @@ class HashHistory extends React.Component {
       if (path !== encodedPath)
         replaceHashPath(encodedPath)
 
+      const location = this.createLocation()
+
       this.setState({
         action: 'POP',
-        location: this.createLocation()
+        location,
+        allPaths: [ location.path ]
       })
     } else {
       warning(
@@ -202,10 +313,11 @@ class HashHistory extends React.Component {
     const { action, location } = this.state
 
     return (
-      <DOMHistoryContext
+      <HistoryContext
         children={children}
         action={action}
         location={location}
+        prompt={this.handlePrompt}
         push={this.handlePush}
         replace={this.handleReplace}
         go={this.handleGo}

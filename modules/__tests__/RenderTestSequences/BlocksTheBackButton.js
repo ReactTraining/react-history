@@ -1,6 +1,6 @@
 import React from 'react'
 import expect from 'expect'
-import { Push, Pop, Prompt } from '../../HistoryActions'
+import { Push, Back, Prompt } from '../../HistoryActions'
 import createRenderProp from './createRenderProp'
 
 export default (done) => {
@@ -22,7 +22,7 @@ export default (done) => {
       return (
         <div>
           <Prompt message={(_, callback) => callback(false)}/>
-          <Pop/>
+          <Back/>
         </div>
       )
     },
@@ -30,14 +30,6 @@ export default (done) => {
       expect(action).toBe('PUSH')
       expect(location).toMatch({
         path: '/hello'
-      })
-
-      return <Pop/>
-    },
-    ({ action, location }) => {
-      expect(action).toBe('POP')
-      expect(location).toMatch({
-        path: '/'
       })
 
       return null

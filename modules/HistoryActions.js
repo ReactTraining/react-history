@@ -49,6 +49,12 @@ Pop.defaultProps = {
   go: -1
 }
 
+export const Back = () =>
+  <Pop go={-1}/>
+
+export const Forward = () =>
+  <Pop go={1}/>
+
 export class Prompt extends React.Component {
   static contextTypes = {
     history: historyContextType.isRequired

@@ -1,6 +1,6 @@
 import React from 'react'
 import expect from 'expect'
-import { Push, Prompt } from '../../HistoryActions'
+import { Replace, Prompt } from '../../HistoryActions'
 import createRenderProp from './createRenderProp'
 
 export default (done) => {
@@ -14,14 +14,14 @@ export default (done) => {
       return (
         <div>
           <Prompt message={(_, callback) => { callback(false); done() }}/>
-          <Push path="/hello"/>
+          <Replace path="/hello"/>
         </div>
       )
     },
     () => {
       expect.assert(
         false,
-        'A blocked <Push> should not emit a new location'
+        'A blocked <Replace> should not emit a new location'
       )
     }
   ]

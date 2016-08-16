@@ -1,4 +1,5 @@
 export BlocksAPush from './BlocksAPush'
+export BlocksAReplace from './BlocksAReplace'
 export BlocksTheBackButton from './BlocksTheBackButton'
 export BlocksTheForwardButton from './BlocksTheForwardButton'
 export HashBangHashEncoding from './HashBangHashEncoding'

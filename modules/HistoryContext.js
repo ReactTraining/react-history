@@ -1,6 +1,4 @@
-import warning from 'warning'
 import React, { PropTypes } from 'react'
-import { locationsAreEqual } from './LocationUtils'
 import {
   action as actionType,
   historyContext as historyContextType,
@@ -15,15 +13,10 @@ class HistoryContext extends React.Component {
     children: PropTypes.func.isRequired,
     action: actionType.isRequired,
     location: locationType.isRequired,
-    confirm: PropTypes.func,
+    prompt: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
     replace: PropTypes.func.isRequired,
-    go: PropTypes.func.isRequired,
-    revert: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {
-    confirm: (callback) => callback(true)
+    go: PropTypes.func.isRequired
   }
 
   static childContextTypes = {
@@ -31,93 +24,20 @@ class HistoryContext extends React.Component {
   }
 
   getChildContext() {
-    const { push, replace, go } = this.props
+    const { prompt, push, replace, go } = this.props
 
     return {
       history: {
+        prompt,
         push,
         replace,
-        go,
-        prompt: this.prompt
+        go
       }
     }
-  }
-
-  prompt = (block) => {
-    warning(
-      this.block == null,
-      'You should not render more than one <Prompt> at a time; previous ones will be overwritten'
-    )
-
-    this.block = block
-
-    return () => {
-      if (this.block === block)
-        this.block = null
-    }
-  }
-
-  state = {
-    action: null,
-    location: null
-  }
-
-  componentWillMount() {
-    this.isBlocked = false
-
-    const { action, location } = this.props
-
-    this.setState({
-      action,
-      location
-    })
-  }
-
-  confirmTransition(action, location, callback) {
-    const block = this.block
-
-    if (typeof block === 'function') {
-      block({ action, location }, callback)
-    } else if (typeof block === 'string') {
-      this.props.confirm(block, callback)
-    } else {
-      callback(true)
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { action, location } = nextProps
-
-    if (!locationsAreEqual(this.props.location, location)) {
-      if (this.isBlocked) {
-        // Unblock after a revert.
-        this.isBlocked = false
-      } else {
-        this.isBlocked = true
-
-        this.confirmTransition(action, location, (ok) => {
-          if (ok) {
-            this.isBlocked = false
-
-            this.setState({
-              action,
-              location
-            })
-          } else {
-            // Remain blocked so we ignore the next prop change as well.
-            this.props.revert()
-          }
-        })
-      }
-    }
-  }
-
-  shouldComponentUpdate() {
-    return !this.isBlocked
   }
 
   render() {
-    const { action, location } = this.state
+    const { action, location } = this.props
 
     return this.props.children({
       action,

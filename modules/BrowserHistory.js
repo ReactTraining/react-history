@@ -1,6 +1,7 @@
 import warning from 'warning'
+import invariant from 'invariant'
 import React, { PropTypes } from 'react'
-import DOMHistoryContext from './DOMHistoryContext'
+import HistoryContext from './HistoryContext'
 import {
   addEventListener,
   removeEventListener,
@@ -37,7 +38,8 @@ class BrowserHistory extends React.Component {
 
   state = {
     action: null,
-    location: null
+    location: null,
+    allKeys: null
   }
 
   createKey() {
@@ -55,60 +57,114 @@ class BrowserHistory extends React.Component {
     }
   }
 
-  handlePopState = (event) => {
-    if (event.state !== undefined) // Ignore extraneous popstate events in WebKit.
-      this.setState({
-        action: 'POP',
-        location: this.createLocation(event.state)
-      })
+  handlePrompt = (prompt) => {
+    invariant(
+      typeof prompt === 'function' || typeof prompt === 'string',
+      'A <BrowserHistory> prompt must be a function or a string'
+    )
+
+    warning(
+      this.prompt == null,
+      '<BrowserHistory> supports only one <Prompt> at a time'
+    )
+
+    this.prompt = prompt
+
+    return () => {
+      if (this.prompt === prompt)
+        this.prompt = null
+    }
   }
 
-  handleHashChange = () => {
-    this.setState({
-      action: 'POP', // Best guess.
-      location: this.createLocation(getHistoryState())
-    })
+  confirmTransitionTo(action, location, callback) {
+    const prompt = this.prompt
+
+    if (typeof prompt === 'function') {
+      prompt({ action, location }, callback)
+    } else if (typeof prompt === 'string') {
+      callback(window.confirm(prompt)) // eslint-disable-line no-alert
+    } else {
+      callback(true)
+    }
   }
 
   handlePush = (path, state) => {
-    if (!this.supportsHistory) {
-      warning(
-        state === undefined,
-        '<BrowserHistory> cannot push state in browsers that do not support HTML5 history'
-      )
-
-      window.location.href = path
-      return
+    const action = 'PUSH'
+    const key = this.createKey()
+    const location = {
+      path,
+      state,
+      key
     }
 
-    const key = this.createKey()
+    this.confirmTransitionTo(action, location, (ok) => {
+      if (!ok)
+        return
 
-    window.history.pushState({ key, state }, null, path)
+      if (this.supportsHistory) {
+        window.history.pushState({ key, state }, null, path)
 
-    this.setState({
-      action: 'PUSH',
-      location: { path, state, key }
+        this.setState(prevState => {
+          const prevKeys = prevState.allKeys
+          const prevIndex = prevKeys.indexOf(prevState.location.key)
+
+          const allKeys = prevKeys.slice(0, prevIndex === -1 ? 0 : prevIndex + 1)
+          allKeys.push(location.key)
+
+          return {
+            action,
+            location,
+            allKeys
+          }
+        })
+      } else {
+        warning(
+          state === undefined,
+          '<BrowserHistory> cannot push state in browsers that do not support HTML5 history'
+        )
+
+        window.location.href = path
+      }
     })
   }
 
   handleReplace = (path, state) => {
-    if (!this.supportsHistory) {
-      warning(
-        state === undefined,
-        '<BrowserHistory> cannot replace state in browsers that do not support HTML5 history'
-      )
-
-      window.location.replace(path)
-      return
+    const action = 'REPLACE'
+    const key = this.createKey()
+    const location = {
+      path,
+      state,
+      key
     }
 
-    const key = this.createKey()
+    this.confirmTransitionTo(action, location, (ok) => {
+      if (!ok)
+        return
 
-    window.history.replaceState({ key, state }, null, path)
+      if (this.supportsHistory) {
+        window.history.replaceState({ key, state }, null, path)
 
-    this.setState({
-      action: 'REPLACE',
-      location: { path, state, key }
+        this.setState(prevState => {
+          const allKeys = prevState.allKeys.slice(0)
+          const prevIndex = allKeys.indexOf(prevState.location.key)
+
+          if (prevIndex !== -1)
+            allKeys[prevIndex] = location.key
+
+          return {
+            action,
+            location,
+            allKeys
+          }
+        })
+      } else {
+        warning(
+          state === undefined,
+          '<BrowserHistory> cannot replace state in browsers that do not support HTML5 history'
+        )
+
+        window.location.replace(path)
+      }
     })
   }
 
@@ -116,14 +172,87 @@ class BrowserHistory extends React.Component {
     window.history.go(n)
   }
 
+  handlePopState = (event) => {
+    if (event.state === undefined)
+      return // Ignore extraneous popstate events in WebKit.
+
+    const action = 'POP'
+    const location = this.createLocation(event.state)
+
+    if (this.forceNextPop) {
+      this.forceNextPop = false
+      this.forceUpdate()
+    } else {
+      this.confirmTransitionTo(action, location, (ok) => {
+        if (ok) {
+          this.setState({
+            action,
+            location
+          })
+        } else {
+          this.revertPop(location)
+        }
+      })
+    }
+  }
+
+  handleHashChange = () => {
+    const action = 'POP' // Best guess.
+    const location = this.createLocation(getHistoryState())
+
+    if (this.forceNextPop) {
+      this.forceNextPop = false
+      this.forceUpdate()
+    } else {
+      this.confirmTransitionTo(action, location, (ok) => {
+        if (ok) {
+          this.setState({
+            action,
+            location
+          })
+        } else {
+          this.revertPop(location)
+        }
+      })
+    }
+  }
+
+  revertPop(popLocation) {
+    const { location, allKeys } = this.state
+
+    // TODO: We could probably make this more reliable by
+    // keeping a list of keys we've seen in sessionStorage.
+    // Instead, we just default to 0 for keys we don't know.
+
+    let toIndex = allKeys.indexOf(location.key)
+
+    if (toIndex === -1)
+      toIndex = 0
+
+    let fromIndex = allKeys.indexOf(popLocation.key)
+
+    if (fromIndex === -1)
+      fromIndex = 0
+
+    const delta = toIndex - fromIndex
+
+    if (delta) {
+      this.forceNextPop = true
+      window.history.go(delta)
+    }
+  }
+
   componentWillMount() {
     if (typeof window === 'object') {
       this.supportsHistory = supportsHistory()
       this.needsHashChangeListener = !supportsPopStateOnHashChange()
 
+      const location = this.createLocation(getHistoryState())
+
       this.setState({
         action: 'POP',
-        location: this.createLocation(getHistoryState())
+        location,
+        allKeys: [ location.key ]
       })
     } else {
       warning(
@@ -152,10 +281,11 @@ class BrowserHistory extends React.Component {
     const { action, location } = this.state
 
     return (
-      <DOMHistoryContext
+      <HistoryContext
         children={children}
         action={action}
         location={location}
+        prompt={this.handlePrompt}
         push={this.handlePush}
         replace={this.handleReplace}
         go={this.handleGo}

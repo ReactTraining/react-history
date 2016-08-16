@@ -52,15 +52,26 @@ describe('HashHistory', () => {
     })
   })
 
-  describe('block', () => {
+  describe('prompt', () => {
     it('blocks a push', (done) => {
       const children = RenderTestSequences.BlocksAPush(done)
       render(<HashHistory children={children}/>, node)
     })
 
-    it('blocks the back button (or go(-1))')
+    it('blocks a replace', (done) => {
+      const children = RenderTestSequences.BlocksAReplace(done)
+      render(<HashHistory children={children}/>, node)
+    })
 
-    it('blocks the forward button (or go(1))')
+    it('blocks the back button or go(-1)', (done) => {
+      const children = RenderTestSequences.BlocksTheBackButton(done)
+      render(<HashHistory children={children}/>, node)
+    })
+
+    it('blocks the forward button or go(1)', (done) => {
+      const children = RenderTestSequences.BlocksTheForwardButton(done)
+      render(<HashHistory children={children}/>, node)
+    })
   })
 
   describe('"hashbang" hash encoding', () => {

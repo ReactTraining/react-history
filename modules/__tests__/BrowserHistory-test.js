@@ -62,14 +62,25 @@ describe('BrowserHistory', () => {
     })
   })
 
-  describe('block', () => {
+  describe('prompt', () => {
     it('blocks a push', (done) => {
       const children = RenderTestSequences.BlocksAPush(done)
       render(<BrowserHistory children={children}/>, node)
     })
 
-    it('blocks the back button (or go(-1))')
+    it('blocks a replace', (done) => {
+      const children = RenderTestSequences.BlocksAReplace(done)
+      render(<BrowserHistory children={children}/>, node)
+    })
 
-    it('blocks the forward button (or go(1))')
+    it('blocks the back button or go(-1)', (done) => {
+      const children = RenderTestSequences.BlocksTheBackButton(done)
+      render(<BrowserHistory children={children}/>, node)
+    })
+
+    it('blocks the forward button or go(1)', (done) => {
+      const children = RenderTestSequences.BlocksTheForwardButton(done)
+      render(<BrowserHistory children={children}/>, node)
+    })
   })
 })
