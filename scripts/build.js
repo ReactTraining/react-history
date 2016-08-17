@@ -14,7 +14,7 @@ const webpackEnv = Object.assign({}, process.env, {
   NODE_ENV: 'production'
 })
 
-exec('npm run build-lib')
+exec('npm run build-cjs')
 exec('npm run build-umd', webpackEnv)
 exec('npm run build-min', webpackEnv)
 

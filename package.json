@@ -7,7 +7,7 @@
   "author": "Michael Jackson",
   "scripts": {
     "build": "node ./scripts/build.js",
-    "build-lib": "babel ./modules -d . --ignore '__tests__'",
+    "build-cjs": "babel ./modules -d . --ignore '__tests__'",
     "build-umd": "webpack modules/index.js umd/react-history.js",
     "build-min": "webpack -p modules/index.js umd/react-history.min.js",
     "prepublish": "node ./scripts/build.js",
