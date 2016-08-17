@@ -39,9 +39,6 @@ export const parsePath = (path) => {
 }
 
 export const createPath = (location) => {
-  if (location == null || typeof location === 'string')
-    return location
-
   const { pathname, search, hash } = location
 
   let path = pathname

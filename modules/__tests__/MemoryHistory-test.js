@@ -25,6 +25,13 @@ describe('MemoryHistory', () => {
         render(<MemoryHistory children={children}/>, node)
       })
     })
+
+    describe('with props', () => {
+      it('uses the correct path', (done) => {
+        const children = RenderTestSequences.PushWithProps(done)
+        render(<MemoryHistory children={children}/>, node)
+      })
+    })
   })
 
   describe('replace', () => {

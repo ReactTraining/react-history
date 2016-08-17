@@ -1,7 +1,11 @@
 import React, { PropTypes } from 'react'
+import { createPath } from './PathUtils'
 import {
   historyContext as historyContextType
 } from './PropTypes'
+
+const createPathFromProps = (props) =>
+  typeof props.path === 'string' ? props.path : createPath(props)
 
 class HistoryAction extends React.Component {
   static contextTypes = {
@@ -25,16 +29,19 @@ class HistoryAction extends React.Component {
   }
 }
 
-export const Push = ({ path, state }) =>
-  <HistoryAction perform={history => history.push(path, state)}/>
+export const Push = (props) =>
+  <HistoryAction perform={history => history.push(createPathFromProps(props), props.state)}/>
 
 Push.propTypes = {
-  path: PropTypes.string.isRequired,
+  path: PropTypes.string,
+  pathname: PropTypes.string,
+  search: PropTypes.string,
+  hash: PropTypes.string,
   state: PropTypes.any
 }
 
-export const Replace = ({ path, state }) =>
-  <HistoryAction perform={history => history.replace(path, state)}/>
+export const Replace = (props) =>
+  <HistoryAction perform={history => history.replace(createPathFromProps(props), props.state)}/>
 
 Replace.propTypes = Push.propTypes
 
