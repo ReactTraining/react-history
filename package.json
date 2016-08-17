@@ -5,16 +5,11 @@
   "repository": "ReactTraining/react-history",
   "license": "MIT",
   "author": "Michael Jackson",
-  "main": "lib",
-  "files": [
-    "lib",
-    "umd"
-  ],
   "scripts": {
-    "build-lib": "rimraf lib && babel ./modules -d lib --ignore '__tests__'",
+    "build": "node ./scripts/build.js",
+    "build-lib": "babel ./modules -d . --ignore '__tests__'",
     "build-umd": "webpack modules/index.js umd/react-history.js",
     "build-min": "webpack -p modules/index.js umd/react-history.min.js",
-    "build": "node ./scripts/build.js",
     "prepublish": "node ./scripts/build.js",
     "release": "node ./scripts/release.js",
     "test": "npm run lint && karma start",
@@ -42,7 +37,6 @@
     "eslint-plugin-react": "^5.1.1",
     "expect": "^1.20.1",
     "gzip-size": "^3.0.0",
-    "history": "^3.0.0",
     "in-publish": "^2.0.0",
     "karma": "^0.13.22",
     "karma-browserstack-launcher": "^1.0.1",
@@ -56,9 +50,7 @@
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "readline-sync": "^1.4.4",
-    "rimraf": "^2.5.2",
-    "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
+    "webpack": "^1.13.1"
   },
   "tags": [
     "react",

@@ -1,2 +1,5 @@
-lib
 umd
+*.js
+!karma.conf.js
+!tests.webpack.js
+!webpack.config.js
