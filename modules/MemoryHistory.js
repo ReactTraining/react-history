@@ -1,6 +1,7 @@
 import warning from 'warning'
 import invariant from 'invariant'
 import React, { PropTypes } from 'react'
+import { createKey } from './LocationKeys'
 import HistoryContext from './HistoryContext'
 
 const clamp = (n, lowerBound, upperBound) =>
@@ -31,7 +32,7 @@ class MemoryHistory extends React.Component {
   }
 
   createKey() {
-    return Math.random().toString(36).substr(2, this.props.keyLength)
+    return createKey(this.props.keyLength)
   }
 
   handlePrompt = (prompt) => {

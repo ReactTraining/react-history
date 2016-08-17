@@ -1,6 +1,7 @@
 import warning from 'warning'
 import invariant from 'invariant'
 import React, { PropTypes } from 'react'
+import { createKey } from './LocationKeys'
 import HistoryContext from './HistoryContext'
 import {
   addEventListener,
@@ -43,7 +44,7 @@ class BrowserHistory extends React.Component {
   }
 
   createKey() {
-    return Math.random().toString(36).substr(2, this.props.keyLength)
+    return createKey(this.props.keyLength)
   }
 
   createLocation(historyState) {
