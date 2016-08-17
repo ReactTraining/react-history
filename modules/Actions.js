@@ -4,9 +4,6 @@ import {
   historyContext as historyContextType
 } from './PropTypes'
 
-const createPathFromProps = (props) =>
-  typeof props.path === 'string' ? props.path : createPath(props)
-
 class HistoryAction extends React.Component {
   static contextTypes = {
     history: historyContextType.isRequired
@@ -28,6 +25,9 @@ class HistoryAction extends React.Component {
     return null
   }
 }
+
+const createPathFromProps = (props) =>
+  typeof props.path === 'string' ? props.path : createPath(props)
 
 export const Push = (props) =>
   <HistoryAction perform={history => history.push(createPathFromProps(props), props.state)}/>
