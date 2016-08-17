@@ -7,14 +7,14 @@ export default (done) => {
   const steps = [
     ({ location }) => {
       expect(location).toMatch({
-        path: '/'
+        pathname: '/'
       })
 
       return <Push path="/hello" state={{ the: 'state' }}/>
     },
     ({ location }) => {
       expect(location).toMatch({
-        path: '/hello',
+        pathname: '/hello',
         state: { the: 'state' },
         key: /^[0-9a-z]+$/
       })
