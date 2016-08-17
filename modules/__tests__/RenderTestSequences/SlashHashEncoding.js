@@ -1,6 +1,6 @@
 import React from 'react'
 import expect from 'expect'
-import { Push, Pop } from '../../Actions'
+import { Push, Back, Forward } from '../../Actions'
 import createRenderProp from './createRenderProp'
 
 export default (done) => {
@@ -11,11 +11,11 @@ export default (done) => {
     },
     () => {
       expect(window.location.hash).toBe('#/hello')
-      return <Pop/>
+      return <Back/>
     },
     () => {
       expect(window.location.hash).toBe('#/')
-      return <Pop go={1}/>
+      return <Forward/>
     },
     () => {
       expect(window.location.hash).toBe('#/hello')

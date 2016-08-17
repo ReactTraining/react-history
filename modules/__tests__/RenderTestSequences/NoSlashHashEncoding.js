@@ -1,6 +1,6 @@
 import React from 'react'
 import expect from 'expect'
-import { Push, Pop } from '../../Actions'
+import { Push, Back, Forward } from '../../Actions'
 import createRenderProp from './createRenderProp'
 
 export default (done) => {
@@ -12,12 +12,12 @@ export default (done) => {
     },
     () => {
       expect(window.location.hash).toBe('#hello')
-      return <Pop/>
+      return <Back/>
     },
     () => {
       // IE 10+ gives us "#", everyone else gives us ""
       expect(window.location.hash).toMatch(/^#?$/)
-      return <Pop go={1}/>
+      return <Forward/>
     },
     () => {
       expect(window.location.hash).toBe('#hello')
