@@ -1,6 +1,6 @@
 import React from 'react'
 import expect from 'expect'
-import { Push, Pop } from '../../HistoryActions'
+import { Push, Pop } from '../../Actions'
 import createRenderProp from './createRenderProp'
 
 export default (done) => {

@@ -1,6 +1,6 @@
 import React from 'react'
 import expect from 'expect'
-import { Push, Back, Forward } from '../../HistoryActions'
+import { Push, Back, Forward } from '../../Actions'
 import Prompt from '../../Prompt'
 import createRenderProp from './createRenderProp'
 
