@@ -64,22 +64,22 @@ describe('BrowserHistory', () => {
 
   describe('prompt', () => {
     it('blocks a push', (done) => {
-      const children = RenderTestSequences.BlocksAPush(done)
+      const children = RenderTestSequences.PromptBlocksAPush(done)
       render(<BrowserHistory children={children}/>, node)
     })
 
     it('blocks a replace', (done) => {
-      const children = RenderTestSequences.BlocksAReplace(done)
+      const children = RenderTestSequences.PromptBlocksAReplace(done)
       render(<BrowserHistory children={children}/>, node)
     })
 
     it('blocks the back button or go(-1)', (done) => {
-      const children = RenderTestSequences.BlocksTheBackButton(done)
+      const children = RenderTestSequences.PromptBlocksTheBackButton(done)
       render(<BrowserHistory children={children}/>, node)
     })
 
     it('blocks the forward button or go(1)', (done) => {
-      const children = RenderTestSequences.BlocksTheForwardButton(done)
+      const children = RenderTestSequences.PromptBlocksTheForwardButton(done)
       render(<BrowserHistory children={children}/>, node)
     })
   })

@@ -1,6 +1,7 @@
 import React from 'react'
 import expect from 'expect'
-import { Replace, Prompt } from '../../HistoryActions'
+import { Replace } from '../../HistoryActions'
+import Prompt from '../../Prompt'
 import createRenderProp from './createRenderProp'
 
 export default (done) => {
