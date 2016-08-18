@@ -14,6 +14,11 @@ describe('MemoryHistory', () => {
   })
 
   describe('push', () => {
+    it('emits a PUSH action', (done) => {
+      const children = RenderTestSequences.PushEmitsAPushAction(done)
+      render(<MemoryHistory children={children}/>, node)
+    })
+
     it('emits a new location', (done) => {
       const children = RenderTestSequences.PushEmitsANewLocation(done)
       render(<MemoryHistory children={children}/>, node)
@@ -35,6 +40,11 @@ describe('MemoryHistory', () => {
   })
 
   describe('replace', () => {
+    it('emits a REPLACE action', (done) => {
+      const children = RenderTestSequences.ReplaceEmitsAReplaceAction(done)
+      render(<MemoryHistory children={children}/>, node)
+    })
+
     it('emits a new location', (done) => {
       const children = RenderTestSequences.ReplaceEmitsANewLocation(done)
       render(<MemoryHistory children={children}/>, node)
@@ -47,6 +57,11 @@ describe('MemoryHistory', () => {
   })
 
   describe('pop', () => {
+    it('emits a POP action', (done) => {
+      const children = RenderTestSequences.PopEmitsAPopAction(done)
+      render(<MemoryHistory children={children}/>, node)
+    })
+
     it('emits a new location', (done) => {
       const children = RenderTestSequences.PopEmitsANewLocation(done)
       render(<MemoryHistory children={children}/>, node)
