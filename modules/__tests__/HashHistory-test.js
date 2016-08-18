@@ -59,6 +59,29 @@ describe('HashHistory', () => {
     })
   })
 
+  describe('with a basename', () => {
+    describe('push', () => {
+      it('emits a new location', (done) => {
+        const children = RenderTestSequences.PushEmitsANewLocation(done)
+        render(<HashHistory basename="/base" children={children}/>, node)
+      })
+    })
+
+    describe('replace', () => {
+      it('emits a new location', (done) => {
+        const children = RenderTestSequences.ReplaceEmitsANewLocation(done)
+        render(<HashHistory basename="/base" children={children}/>, node)
+      })
+    })
+
+    describe('pop', () => {
+      it('emits a new location', (done) => {
+        const children = RenderTestSequences.PopEmitsANewLocation(done)
+        render(<HashHistory basename="/base" children={children}/>, node)
+      })
+    })
+  })
+
   describe('prompt', () => {
     it('blocks a push', (done) => {
       const children = RenderTestSequences.PromptBlocksAPush(done)

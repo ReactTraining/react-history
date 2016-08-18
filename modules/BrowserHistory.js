@@ -29,6 +29,7 @@ const getHistoryState = () => {
  */
 class BrowserHistory extends React.Component {
   static propTypes = {
+    basename: PropTypes.string,
     children: PropTypes.func.isRequired,
     keyLength: PropTypes.number
   }
@@ -278,11 +279,12 @@ class BrowserHistory extends React.Component {
   }
 
   render() {
-    const { children } = this.props
+    const { basename, children } = this.props
     const { action, location } = this.state
 
     return (
       <HistoryContext
+        basename={basename}
         children={children}
         action={action}
         location={location}

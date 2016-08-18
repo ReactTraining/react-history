@@ -57,6 +57,7 @@ const replaceHashPath = (path) => {
  */
 class HashHistory extends React.Component {
   static propTypes = {
+    basename: PropTypes.string,
     children: PropTypes.func.isRequired,
     hashType: PropTypes.oneOf(Object.keys(HashPathCoders))
   }
@@ -309,11 +310,12 @@ class HashHistory extends React.Component {
   }
 
   render() {
-    const { children } = this.props
+    const { basename, children } = this.props
     const { action, location } = this.state
 
     return (
       <HistoryContext
+        basename={basename}
         children={children}
         action={action}
         location={location}

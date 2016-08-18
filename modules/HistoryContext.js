@@ -6,11 +6,15 @@ import {
   location as locationType
 } from './PropTypes'
 
+const stripPrefix = (prefix, string) =>
+  string.indexOf(prefix) === 0 ? string.substring(prefix.length) : string
+
 /**
  * The common public API for all *History components.
  */
 class HistoryContext extends React.Component {
   static propTypes = {
+    basename: PropTypes.string,
     children: PropTypes.func.isRequired,
     action: actionType.isRequired,
     location: locationType.isRequired,
@@ -20,34 +24,42 @@ class HistoryContext extends React.Component {
     go: PropTypes.func.isRequired
   }
 
+  static defaultProps = {
+    basename: ''
+  }
+
   static childContextTypes = {
     history: historyContextType.isRequired
   }
 
   getChildContext() {
-    const { prompt, push, replace, go } = this.props
-
     return {
       history: {
-        prompt,
-        push,
-        replace,
-        go
+        prompt: this.props.prompt,
+        push: this.push,
+        replace: this.replace,
+        go: this.props.go
       }
     }
   }
 
+  push = (path, state) =>
+    this.props.push(this.props.basename + path, state)
+
+  replace = (path, state) =>
+    this.props.replace(this.props.basename + path, state)
+
   render() {
-    const { action, location } = this.props
+    const { basename, children, action, location } = this.props
 
     const { path, ...everythingElse } = location
     const { pathname, search, hash } = parsePath(path)
 
-    return this.props.children({
+    return children({
       action,
       location: {
         ...everythingElse,
-        pathname,
+        pathname: basename ? stripPrefix(basename, pathname) : pathname,
         search,
         hash
       }

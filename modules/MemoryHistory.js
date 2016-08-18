@@ -12,6 +12,7 @@ const clamp = (n, lowerBound, upperBound) =>
  */
 class MemoryHistory extends React.Component {
   static propTypes = {
+    basename: PropTypes.string,
     children: PropTypes.func.isRequired,
     initialEntries: PropTypes.array,
     initialIndex: PropTypes.number,
@@ -159,12 +160,13 @@ class MemoryHistory extends React.Component {
   }
 
   render() {
-    const { children } = this.props
+    const { basename, children } = this.props
     const { action, index, entries } = this.state
     const location = entries[index]
 
     return (
       <HistoryContext
+        basename={basename}
         children={children}
         action={action}
         location={location}
