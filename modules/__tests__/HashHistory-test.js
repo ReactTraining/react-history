@@ -124,4 +124,11 @@ describe('HashHistory', () => {
       render(<HashHistory hashType="slash" children={children}/>, node)
     })
   })
+
+  describe('inactive prompt', () => {
+    it('allows a push', (done) => {
+      const children = RenderTestSequences.InactivePromptAllowsAPush(done)
+      render(<HashHistory children={children}/>, node)
+    })
+  })
 })

@@ -112,4 +112,11 @@ describe('MemoryHistory', () => {
       render(<MemoryHistory children={children}/>, node)
     })
   })
+
+  describe('inactive prompt', () => {
+    it('allows a push', (done) => {
+      const children = RenderTestSequences.InactivePromptAllowsAPush(done)
+      render(<MemoryHistory children={children}/>, node)
+    })
+  })
 })

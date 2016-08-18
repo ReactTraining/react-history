@@ -1,4 +1,5 @@
 export HashBangHashEncoding from './HashBangHashEncoding'
+export InactivePromptAllowsAPush from './InactivePromptAllowsAPush'
 export NoSlashHashEncoding from './NoSlashHashEncoding'
 export PopEmitsANewLocation from './PopEmitsANewLocation'
 export PopEmitsAPopAction from './PopEmitsAPopAction'

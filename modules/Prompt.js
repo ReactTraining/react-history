@@ -12,11 +12,34 @@ class Prompt extends React.Component {
     message: PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.string
-    ]).isRequired
+    ]).isRequired,
+    when: PropTypes.bool
+  }
+
+  static defaultProps = {
+    when: true
+  }
+
+  block() {
+    if (!this.teardownPrompt)
+      this.teardownPrompt = this.context.history.prompt(this.props.message)
+  }
+
+  unblock() {
+    if (this.teardownPrompt) {
+      this.teardownPrompt()
+      this.teardownPrompt = null
+    }
   }
 
   componentWillMount() {
-    this.unblock = this.context.history.prompt(this.props.message)
+    if (this.props.when)
+      this.block()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.when)
+      this.block()
   }
 
   componentWillUnmount() {
