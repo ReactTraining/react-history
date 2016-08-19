@@ -35,19 +35,33 @@ class HistoryContext extends React.Component {
   getChildContext() {
     return {
       history: {
-        prompt: this.props.prompt,
+        prompt: this.prompt,
         push: this.push,
         replace: this.replace,
-        go: this.props.go
+        go: this.go,
+        goBack: this.goBack,
+        goForward: this.goForward
       }
     }
   }
+
+  prompt = (...args) =>
+    this.props.prompt(...args)
 
   push = (path, state) =>
     this.props.push(this.props.basename + path, state)
 
   replace = (path, state) =>
     this.props.replace(this.props.basename + path, state)
+
+  go = (...args) =>
+    this.props.go(...args)
+
+  goBack = () =>
+    this.go(-1)
+
+  goForward = () =>
+    this.go(1)
 
   render() {
     const { basename, children, action, location } = this.props

@@ -57,7 +57,7 @@ Pop.defaultProps = {
 }
 
 export const Back = () =>
-  <Pop go={-1}/>
+  <HistoryAction perform={history => history.goBack()}/>
 
 export const Forward = () =>
-  <Pop go={1}/>
+  <HistoryAction perform={history => history.goForward()}/>
