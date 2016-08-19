@@ -1,13 +1,10 @@
 import React, { PropTypes } from 'react'
-import { parsePath } from './PathUtils'
+import { stripPrefix, parsePath } from './PathUtils'
 import {
   action as actionType,
   historyContext as historyContextType,
   location as locationType
 } from './PropTypes'
-
-const stripPrefix = (prefix, string) =>
-  string.indexOf(prefix) === 0 ? string.substring(prefix.length) : string
 
 /**
  * The common public API for all *History components.

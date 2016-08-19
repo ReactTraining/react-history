@@ -1,5 +1,8 @@
 import warning from 'warning'
 
+export const stripPrefix = (prefix, string) =>
+  string.indexOf(prefix) === 0 ? string.substring(prefix.length) : string
+
 export const extractPath = (url) => {
   const match = url.match(/^(https?:)?\/\/[^\/]*/)
   return match == null ? url : url.substring(match[0].length)
