@@ -38,8 +38,11 @@ class Prompt extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.when)
+    if (nextProps.when) {
       this.block()
+    } else {
+      this.unblock()
+    }
   }
 
   componentWillUnmount() {
