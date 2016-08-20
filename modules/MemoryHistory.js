@@ -2,7 +2,7 @@ import warning from 'warning'
 import invariant from 'invariant'
 import React, { PropTypes } from 'react'
 import { createKey } from './LocationKeys'
-import HistoryContext from './HistoryContext'
+import HistoryProvider from './HistoryProvider'
 
 const clamp = (n, lowerBound, upperBound) =>
   Math.min(Math.max(n, lowerBound), upperBound)
@@ -178,7 +178,7 @@ class MemoryHistory extends React.Component {
     }
 
     return (
-      <HistoryContext
+      <HistoryProvider
         action={action}
         location={location}
         historyContext={historyContext}
