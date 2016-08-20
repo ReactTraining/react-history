@@ -252,8 +252,8 @@ class HashHistory extends React.Component {
     const { location, allPaths } = this.state
 
     // TODO: We could probably make this more reliable by
-    // keeping a list of keys we've seen in sessionStorage.
-    // Instead, we just default to 0 for keys we don't know.
+    // keeping a list of paths we've seen in sessionStorage.
+    // Instead, we just default to 0 for paths we don't know.
 
     let toIndex = allPaths.lastIndexOf(location.path)
 
