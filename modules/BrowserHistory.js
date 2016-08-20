@@ -9,6 +9,9 @@ import {
   supportsHistory,
   supportsPopStateOnHashChange
 } from './DOMUtils'
+import {
+  stripPrefix
+} from './PathUtils'
 
 const PopStateEvent = 'popstate'
 const HashChangeEvent = 'hashchange'
@@ -30,11 +33,12 @@ const getHistoryState = () => {
 class BrowserHistory extends React.Component {
   static propTypes = {
     basename: PropTypes.string,
-    children: PropTypes.func.isRequired,
-    keyLength: PropTypes.number
+    keyLength: PropTypes.number,
+    children: PropTypes.func.isRequired
   }
 
   static defaultProps = {
+    basename: '',
     keyLength: 6
   }
 
@@ -52,8 +56,15 @@ class BrowserHistory extends React.Component {
     const { key, state } = (historyState || {})
     const { pathname, search, hash } = window.location
 
+    let path = pathname + search + hash
+
+    const { basename } = this.props
+
+    if (basename)
+      path = stripPrefix(basename, path)
+
     return {
-      path: pathname + search + hash,
+      path,
       state,
       key
     }
@@ -103,8 +114,10 @@ class BrowserHistory extends React.Component {
       if (!ok)
         return
 
+      const url = this.props.basename + path
+
       if (this.supportsHistory) {
-        window.history.pushState({ key, state }, null, path)
+        window.history.pushState({ key, state }, null, url)
 
         this.setState(prevState => {
           const prevKeys = prevState.allKeys
@@ -125,7 +138,7 @@ class BrowserHistory extends React.Component {
           '<BrowserHistory> cannot push state in browsers that do not support HTML5 history'
         )
 
-        window.location.href = path
+        window.location.href = url
       }
     })
   }
@@ -143,8 +156,10 @@ class BrowserHistory extends React.Component {
       if (!ok)
         return
 
+      const url = this.props.basename + path
+
       if (this.supportsHistory) {
-        window.history.replaceState({ key, state }, null, path)
+        window.history.replaceState({ key, state }, null, url)
 
         this.setState(prevState => {
           const allKeys = prevState.allKeys.slice(0)
@@ -165,7 +180,7 @@ class BrowserHistory extends React.Component {
           '<BrowserHistory> cannot replace state in browsers that do not support HTML5 history'
         )
 
-        window.location.replace(path)
+        window.location.replace(url)
       }
     })
   }
@@ -279,12 +294,11 @@ class BrowserHistory extends React.Component {
   }
 
   render() {
-    const { basename, children } = this.props
+    const { children } = this.props
     const { action, location } = this.state
 
     return (
       <HistoryContext
-        basename={basename}
         children={children}
         action={action}
         location={location}

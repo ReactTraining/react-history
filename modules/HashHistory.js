@@ -10,6 +10,9 @@ import {
 import {
   locationsAreEqual
 } from './LocationUtils'
+import {
+  stripPrefix
+} from './PathUtils'
 
 const HashChangeEvent = 'hashchange'
 
@@ -56,11 +59,12 @@ const replaceHashPath = (path) => {
 class HashHistory extends React.Component {
   static propTypes = {
     basename: PropTypes.string,
-    children: PropTypes.func.isRequired,
-    hashType: PropTypes.oneOf(Object.keys(HashPathCoders))
+    hashType: PropTypes.oneOf(Object.keys(HashPathCoders)),
+    children: PropTypes.func.isRequired
   }
 
   static defaultProps = {
+    basename: '',
     hashType: 'slash'
   }
 
@@ -79,7 +83,12 @@ class HashHistory extends React.Component {
   }
 
   createLocation() {
-    const path = this.decodePath(getHashPath())
+    let path = this.decodePath(getHashPath())
+
+    const { basename } = this.props
+
+    if (basename)
+      path = stripPrefix(basename, path)
 
     return {
       path
@@ -132,7 +141,7 @@ class HashHistory extends React.Component {
       if (!ok)
         return
 
-      const encodedPath = this.encodePath(path)
+      const encodedPath = this.encodePath(this.props.basename + path)
       const hashChanged = getHashPath() !== encodedPath
 
       if (hashChanged) {
@@ -174,7 +183,7 @@ class HashHistory extends React.Component {
       if (!ok)
         return
 
-      const encodedPath = this.encodePath(path)
+      const encodedPath = this.encodePath(this.props.basename + path)
       const hashChanged = getHashPath() !== encodedPath
 
       if (hashChanged) {
@@ -308,12 +317,11 @@ class HashHistory extends React.Component {
   }
 
   render() {
-    const { basename, children } = this.props
+    const { children } = this.props
     const { action, location } = this.state
 
     return (
       <HistoryContext
-        basename={basename}
         children={children}
         action={action}
         location={location}

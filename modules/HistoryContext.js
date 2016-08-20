@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { stripPrefix, parsePath } from './PathUtils'
+import { parsePath } from './PathUtils'
 import {
   action as actionType,
   historyContext as historyContextType,
@@ -11,7 +11,6 @@ import {
  */
 class HistoryContext extends React.Component {
   static propTypes = {
-    basename: PropTypes.string,
     children: PropTypes.func.isRequired,
     action: actionType.isRequired,
     location: locationType.isRequired,
@@ -19,10 +18,6 @@ class HistoryContext extends React.Component {
     push: PropTypes.func.isRequired,
     replace: PropTypes.func.isRequired,
     go: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {
-    basename: ''
   }
 
   static childContextTypes = {
@@ -45,11 +40,11 @@ class HistoryContext extends React.Component {
   prompt = (...args) =>
     this.props.prompt(...args)
 
-  push = (path, state) =>
-    this.props.push(this.props.basename + path, state)
+  push = (...args) =>
+    this.props.push(...args)
 
-  replace = (path, state) =>
-    this.props.replace(this.props.basename + path, state)
+  replace = (...args) =>
+    this.props.replace(...args)
 
   go = (...args) =>
     this.props.go(...args)
@@ -61,7 +56,7 @@ class HistoryContext extends React.Component {
     this.go(1)
 
   render() {
-    const { basename, children, action, location } = this.props
+    const { children, action, location } = this.props
 
     const { path, ...everythingElse } = location
     const { pathname, search, hash } = parsePath(path)
@@ -71,7 +66,7 @@ class HistoryContext extends React.Component {
       action,
       location: {
         ...everythingElse,
-        pathname: basename ? stripPrefix(basename, pathname) : pathname,
+        pathname,
         search,
         hash
       }
