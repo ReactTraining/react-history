@@ -154,6 +154,13 @@ class MemoryHistory extends React.Component {
   goForward = () =>
     this.go(1)
 
+  canGo = (n) => {
+    const { index, entries } = this.state
+    const nextIndex = index + n
+
+    return nextIndex >= 0 && nextIndex < entries.length
+  }
+
   componentWillMount() {
     const { initialEntries, initialIndex } = this.props
 
@@ -174,7 +181,8 @@ class MemoryHistory extends React.Component {
       replace: this.replace,
       go: this.go,
       goBack: this.goBack,
-      goForward: this.goForward
+      goForward: this.goForward,
+      canGo: this.canGo
     }
 
     return (
