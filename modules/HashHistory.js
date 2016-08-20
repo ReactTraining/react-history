@@ -86,38 +86,38 @@ class HashHistory extends React.Component {
     }
   }
 
-  handlePrompt = (prompt) => {
+  prompt = (promptMessage) => {
     invariant(
-      typeof prompt === 'function' || typeof prompt === 'string',
-      'A <HashHistory> prompt must be a function or a string'
+      typeof promptMessage === 'string' || typeof promptMessage === 'function',
+      'A <HashHistory> prompt must be a string or a function'
     )
 
     warning(
-      this.prompt == null,
+      this.promptMessage == null,
       '<HashHistory> supports only one <Prompt> at a time'
     )
 
-    this.prompt = prompt
+    this.promptMessage = promptMessage
 
     return () => {
-      if (this.prompt === prompt)
-        this.prompt = null
+      if (this.promptMessage === promptMessage)
+        this.promptMessage = null
     }
   }
 
   confirmTransitionTo(action, location, callback) {
-    const prompt = this.prompt
+    const promptMessage = this.promptMessage
 
-    if (typeof prompt === 'function') {
-      prompt({ action, location }, callback)
-    } else if (typeof prompt === 'string') {
-      callback(window.confirm(prompt)) // eslint-disable-line no-alert
+    if (typeof promptMessage === 'string') {
+      callback(window.confirm(promptMessage)) // eslint-disable-line no-alert
+    } else if (typeof promptMessage === 'function') {
+      promptMessage({ action, location }, callback)
     } else {
       callback(true)
     }
   }
 
-  handlePush = (path, state) => {
+  push = (path, state) => {
     warning(
       state === undefined,
       '<HashHistory> cannot push state; it will be dropped'
@@ -159,7 +159,7 @@ class HashHistory extends React.Component {
     })
   }
 
-  handleReplace = (path, state) => {
+  replace = (path, state) => {
     warning(
       state === undefined,
       '<HashHistory> cannot replace state; it will be dropped'
@@ -201,7 +201,7 @@ class HashHistory extends React.Component {
     })
   }
 
-  handleGo = (n) => {
+  go = (n) => {
     warning(
       this.goIsSupportedWithoutReload,
       '<HashHistory> go(n) causes a full page reload in this browser'
@@ -317,10 +317,10 @@ class HashHistory extends React.Component {
         children={children}
         action={action}
         location={location}
-        prompt={this.handlePrompt}
-        push={this.handlePush}
-        replace={this.handleReplace}
-        go={this.handleGo}
+        prompt={this.prompt}
+        push={this.push}
+        replace={this.replace}
+        go={this.go}
       />
     )
   }

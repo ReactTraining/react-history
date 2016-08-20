@@ -36,36 +36,36 @@ class MemoryHistory extends React.Component {
     return createKey(this.props.keyLength)
   }
 
-  handlePrompt = (prompt) => {
+  prompt = (promptMessage) => {
     invariant(
-      typeof prompt === 'function',
+      typeof promptMessage === 'function',
       'A <MemoryHistory> prompt must be a function'
     )
 
     warning(
-      this.prompt == null,
+      this.promptMessage == null,
       '<MemoryHistory> supports only one <Prompt> at a time'
     )
 
-    this.prompt = prompt
+    this.promptMessage = promptMessage
 
     return () => {
-      if (this.prompt === prompt)
-        this.prompt = null
+      if (this.promptMessage === promptMessage)
+        this.promptMessage = null
     }
   }
 
   confirmTransitionTo(action, location, callback) {
-    const prompt = this.prompt
+    const promptMessage = this.promptMessage
 
-    if (typeof prompt === 'function') {
-      prompt({ action, location }, callback)
+    if (typeof promptMessage === 'function') {
+      promptMessage({ action, location }, callback)
     } else {
       callback(true)
     }
   }
 
-  handlePush = (path, state) => {
+  push = (path, state) => {
     const action = 'PUSH'
     const key = this.createKey()
     const location = {
@@ -99,7 +99,7 @@ class MemoryHistory extends React.Component {
     })
   }
 
-  handleReplace = (path, state) => {
+  replace = (path, state) => {
     const action = 'REPLACE'
     const key = this.createKey()
     const location = {
@@ -127,7 +127,7 @@ class MemoryHistory extends React.Component {
     })
   }
 
-  handleGo = (n) => {
+  go = (n) => {
     const { index, entries } = this.state
     const nextIndex = clamp(index + n, 0, entries.length - 1)
 
@@ -170,10 +170,10 @@ class MemoryHistory extends React.Component {
         children={children}
         action={action}
         location={location}
-        prompt={this.handlePrompt}
-        push={this.handlePush}
-        replace={this.handleReplace}
-        go={this.handleGo}
+        prompt={this.prompt}
+        push={this.push}
+        replace={this.replace}
+        go={this.go}
       />
     )
   }
