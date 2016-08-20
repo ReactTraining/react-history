@@ -9,7 +9,7 @@ import {
 /**
  * The common public API for all *History components.
  */
-class HistoryContext extends React.Component {
+class HistoryProvider extends React.Component {
   static propTypes = {
     action: actionType.isRequired,
     location: locationType.isRequired,
@@ -46,4 +46,4 @@ class HistoryContext extends React.Component {
   }
 }
 
-export default HistoryContext
+export default HistoryProvider
