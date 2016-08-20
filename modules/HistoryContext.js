@@ -67,6 +67,7 @@ class HistoryContext extends React.Component {
     const { pathname, search, hash } = parsePath(path)
 
     return children({
+      history: this.getChildContext().history,
       action,
       location: {
         ...everythingElse,
