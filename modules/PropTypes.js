@@ -10,7 +10,9 @@ export const historyContext = PropTypes.shape({
   prompt: PropTypes.func.isRequired,
   push: PropTypes.func.isRequired,
   replace: PropTypes.func.isRequired,
-  go: PropTypes.func.isRequired
+  go: PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired,
+  goForward: PropTypes.func.isRequired
 })
 
 export const location = PropTypes.shape({

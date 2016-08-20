@@ -11,13 +11,10 @@ import {
  */
 class HistoryContext extends React.Component {
   static propTypes = {
-    children: PropTypes.func.isRequired,
     action: actionType.isRequired,
     location: locationType.isRequired,
-    prompt: PropTypes.func.isRequired,
-    push: PropTypes.func.isRequired,
-    replace: PropTypes.func.isRequired,
-    go: PropTypes.func.isRequired
+    historyContext: historyContextType.isRequired,
+    children: PropTypes.func.isRequired
   }
 
   static childContextTypes = {
@@ -26,43 +23,18 @@ class HistoryContext extends React.Component {
 
   getChildContext() {
     return {
-      history: {
-        prompt: this.prompt,
-        push: this.push,
-        replace: this.replace,
-        go: this.go,
-        goBack: this.goBack,
-        goForward: this.goForward
-      }
+      history: this.props.historyContext
     }
   }
 
-  prompt = (...args) =>
-    this.props.prompt(...args)
-
-  push = (...args) =>
-    this.props.push(...args)
-
-  replace = (...args) =>
-    this.props.replace(...args)
-
-  go = (...args) =>
-    this.props.go(...args)
-
-  goBack = () =>
-    this.go(-1)
-
-  goForward = () =>
-    this.go(1)
-
   render() {
-    const { children, action, location } = this.props
+    const { action, location, historyContext, children } = this.props
 
     const { path, ...everythingElse } = location
     const { pathname, search, hash } = parsePath(path)
 
     return children({
-      history: this.getChildContext().history,
+      history: historyContext,
       action,
       location: {
         ...everythingElse,

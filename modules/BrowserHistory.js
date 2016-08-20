@@ -189,6 +189,12 @@ class BrowserHistory extends React.Component {
     window.history.go(n)
   }
 
+  goBack = () =>
+    this.go(-1)
+
+  goForward = () =>
+    this.go(1)
+
   handlePopState = (event) => {
     if (event.state === undefined)
       return // Ignore extraneous popstate events in WebKit.
@@ -296,16 +302,21 @@ class BrowserHistory extends React.Component {
   render() {
     const { children } = this.props
     const { action, location } = this.state
+    const historyContext = {
+      prompt: this.prompt,
+      push: this.push,
+      replace: this.replace,
+      go: this.go,
+      goBack: this.goBack,
+      goForward: this.goForward
+    }
 
     return (
       <HistoryContext
-        children={children}
         action={action}
         location={location}
-        prompt={this.prompt}
-        push={this.push}
-        replace={this.replace}
-        go={this.go}
+        historyContext={historyContext}
+        children={children}
       />
     )
   }
