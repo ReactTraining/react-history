@@ -4,7 +4,7 @@ import {
   historyContext as historyContextType
 } from './PropTypes'
 
-class HistoryAction extends React.Component {
+class Action extends React.Component {
   static contextTypes = {
     history: historyContextType.isRequired
   }
@@ -30,7 +30,7 @@ const createPathFromProps = (props) =>
   typeof props.path === 'string' ? props.path : createPath(props)
 
 export const Push = (props) =>
-  <HistoryAction perform={history => history.push(createPathFromProps(props), props.state)}/>
+  <Action perform={history => history.push(createPathFromProps(props), props.state)}/>
 
 Push.propTypes = {
   path: PropTypes.string,
@@ -41,12 +41,12 @@ Push.propTypes = {
 }
 
 export const Replace = (props) =>
-  <HistoryAction perform={history => history.replace(createPathFromProps(props), props.state)}/>
+  <Action perform={history => history.replace(createPathFromProps(props), props.state)}/>
 
 Replace.propTypes = Push.propTypes
 
 export const Pop = ({ go }) =>
-  <HistoryAction perform={history => history.go(go)}/>
+  <Action perform={history => history.go(go)}/>
 
 Pop.propTypes = {
   go: PropTypes.number
@@ -57,7 +57,7 @@ Pop.defaultProps = {
 }
 
 export const Back = () =>
-  <HistoryAction perform={history => history.goBack()}/>
+  <Action perform={history => history.goBack()}/>
 
 export const Forward = () =>
-  <HistoryAction perform={history => history.goForward()}/>
+  <Action perform={history => history.goForward()}/>
