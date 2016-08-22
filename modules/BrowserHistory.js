@@ -70,32 +70,32 @@ class BrowserHistory extends React.Component {
     }
   }
 
-  prompt = (promptMessage) => {
+  block = (prompt) => {
     invariant(
-      typeof promptMessage === 'string' || typeof promptMessage === 'function',
+      typeof prompt === 'string' || typeof prompt === 'function',
       'A <BrowserHistory> prompt must be a string or a function'
     )
 
     warning(
-      this.promptMessage == null,
+      this.prompt == null,
       '<BrowserHistory> supports only one <Prompt> at a time'
     )
 
-    this.promptMessage = promptMessage
+    this.prompt = prompt
 
     return () => {
-      if (this.promptMessage === promptMessage)
-        this.promptMessage = null
+      if (this.prompt === prompt)
+        this.prompt = null
     }
   }
 
   confirmTransitionTo(action, location, callback) {
-    const promptMessage = this.promptMessage
+    const prompt = this.prompt
 
-    if (typeof promptMessage === 'string') {
-      callback(window.confirm(promptMessage)) // eslint-disable-line no-alert
-    } else if (typeof promptMessage === 'function') {
-      promptMessage({ action, location }, callback)
+    if (typeof prompt === 'string') {
+      callback(window.confirm(prompt)) // eslint-disable-line no-alert
+    } else if (typeof prompt === 'function') {
+      prompt({ action, location }, callback)
     } else {
       callback(true)
     }
@@ -303,7 +303,7 @@ class BrowserHistory extends React.Component {
     const { children } = this.props
     const { action, location } = this.state
     const historyContext = {
-      prompt: this.prompt,
+      block: this.block,
       push: this.push,
       replace: this.replace,
       go: this.go,

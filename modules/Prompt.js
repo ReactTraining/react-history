@@ -9,11 +9,11 @@ class Prompt extends React.Component {
   }
 
   static propTypes = {
+    when: PropTypes.bool,
     message: PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.string
-    ]).isRequired,
-    when: PropTypes.bool
+    ]).isRequired
   }
 
   static defaultProps = {
@@ -22,7 +22,7 @@ class Prompt extends React.Component {
 
   block() {
     if (!this.teardownPrompt)
-      this.teardownPrompt = this.context.history.prompt(this.props.message)
+      this.teardownPrompt = this.context.history.block(this.props.message)
   }
 
   unblock() {

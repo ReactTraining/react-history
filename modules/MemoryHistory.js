@@ -35,30 +35,30 @@ class MemoryHistory extends React.Component {
     return createKey(this.props.keyLength)
   }
 
-  prompt = (promptMessage) => {
+  block = (prompt) => {
     invariant(
-      typeof promptMessage === 'function',
+      typeof prompt === 'function',
       'A <MemoryHistory> prompt must be a function'
     )
 
     warning(
-      this.promptMessage == null,
+      this.prompt == null,
       '<MemoryHistory> supports only one <Prompt> at a time'
     )
 
-    this.promptMessage = promptMessage
+    this.prompt = prompt
 
     return () => {
-      if (this.promptMessage === promptMessage)
-        this.promptMessage = null
+      if (this.prompt === prompt)
+        this.prompt = null
     }
   }
 
   confirmTransitionTo(action, location, callback) {
-    const promptMessage = this.promptMessage
+    const prompt = this.prompt
 
-    if (typeof promptMessage === 'function') {
-      promptMessage({ action, location }, callback)
+    if (typeof prompt === 'function') {
+      prompt({ action, location }, callback)
     } else {
       callback(true)
     }
@@ -176,7 +176,7 @@ class MemoryHistory extends React.Component {
     const { action, index, entries } = this.state
     const location = entries[index]
     const historyContext = {
-      prompt: this.prompt,
+      block: this.block,
       push: this.push,
       replace: this.replace,
       go: this.go,
