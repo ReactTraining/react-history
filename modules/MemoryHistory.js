@@ -19,7 +19,7 @@ class MemoryHistory extends React.Component {
   }
 
   static defaultProps = {
-    initialEntries: [ { path: '/' } ],
+    initialEntries: [ '/' ],
     initialIndex: 0,
     keyLength: 6
   }
@@ -164,10 +164,18 @@ class MemoryHistory extends React.Component {
   componentWillMount() {
     const { initialEntries, initialIndex } = this.props
 
+    // Normalize initialEntries based on type.
+    const entries = initialEntries.map(entry => {
+      if (typeof entry === 'string')
+        return { path: entry }
+
+      return entry
+    })
+
     this.setState({
       action: 'POP',
       index: clamp(initialIndex, 0, initialEntries.length - 1),
-      entries: initialEntries
+      entries
     })
   }
 
