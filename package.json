@@ -3,8 +3,8 @@
   "version": "0.8.0",
   "description": "Manage the URL with React",
   "repository": "ReactTraining/react-history",
-  "license": "MIT",
   "author": "Michael Jackson",
+  "license": "MIT",
   "scripts": {
     "build": "node ./scripts/build.js",
     "build-cjs": "babel ./modules -d . --ignore '__tests__'",
@@ -54,8 +54,7 @@
   },
   "tags": [
     "react",
-    "history",
-    "link"
+    "history"
   ],
   "keywords": [
     "react",
