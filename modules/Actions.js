@@ -12,12 +12,16 @@ class Action extends React.Component {
     perform: PropTypes.func.isRequired
   }
 
-  componentDidMount() {
+  performAction() {
     this.props.perform(this.context.history)
   }
 
-  componentWillReceiveProps(nextProps) {
-    nextProps.perform(this.context.history)
+  componentDidMount() {
+    this.performAction()
+  }
+
+  componentDidUpdate() {
+    this.performAction()
   }
 
   render() {
