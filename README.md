@@ -51,8 +51,8 @@ const App = React.createClass({
   render() {
     return (
       <History>
-        {({ action, location }) => (
-          <p>The current URL is {location.pathname}</p>
+        {({ history, action, location }) => (
+          <p>The current URL is {location.path}</p>
         )}
       </History>
     )
@@ -60,13 +60,22 @@ const App = React.createClass({
 })
 ```
 
+The `history` object contains a bunch of methods you can use to imperatively modify the URL. These include:
+
+- `history.push(path, state)`
+- `history.replace(path, state)`
+- `history.go(n)`
+- `history.goBack()`
+- `history.goForward()`
+- `history.canGo(n)` (only supported in `<MemoryHistory>`)
+
 The `action` will always be one of `PUSH`, `REPLACE`, or `POP` and refers to the type of change that was made to the history "stack" in order to arrive at the current URL. Note that unlike the traditional abstract stack data type, a `POP` does not actually modify the size of the stack, only the current pointer or index.
 
-The `location` is an object that implements a subset of [the DOM's Location interface](https://developer.mozilla.org/en-US/docs/Web/API/Location), including:
+The `location` is an object that has the following properties:
 
-- `location.pathname`
-- `location.search`
-- `location.hash`
+- `location.path` - The current URL path, including query string and hash fragment
+- `location.state` - Extra state specific to this location (not supported in `<HashHistory>`)
+- `location.key` - A string identifier specific to this location (not supported in `<HashHistory>`)
 
 `react-history` also provides the following components that may be used to modify the current URL:
 
@@ -109,24 +118,4 @@ const Link = React.createClass({
 
 **Note:** This `<Link>` implementation is for demonstration purposes only. It is not accessible and does not include many of the nice features of a real hyperlink. If you're looking for a proper `<Link>` implementation, [please use `react-router`](https://www.npmjs.com/package/react-router).
 
-If you'd like to prompt the user before they leave the current page, render a `<Prompt>`.
-
-```js
-import React, { PropTypes } from 'react'
-import { Prompt } from 'react-history'
-
-const App = React.createClass({
-  getInitialState() {
-    return {
-      isHalfFilledOut: false
-    }
-  },
-  render() {
-    return (
-      <form>
-        <input type="text"/>
-      </form>
-    )
-  }
-})
-```
+TODO: MOAR DOCS!!!
