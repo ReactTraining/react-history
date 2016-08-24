@@ -26,13 +26,6 @@ describe('HashHistory', () => {
       const children = RenderTestSequences.PushEmitsANewLocation(done)
       render(<HashHistory children={children}/>, node)
     })
-
-    describe('with props', () => {
-      it('uses the correct path', (done) => {
-        const children = RenderTestSequences.PushWithProps(done)
-        render(<HashHistory children={children}/>, node)
-      })
-    })
   })
 
   describe('replace', () => {

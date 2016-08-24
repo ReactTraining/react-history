@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import { createPath } from './PathUtils'
 import {
   historyContext as historyContextType
 } from './PropTypes'
@@ -26,22 +25,16 @@ class Action extends React.Component {
   }
 }
 
-const createPathFromProps = (props) =>
-  typeof props.path === 'string' ? props.path : createPath(props)
-
-export const Push = (props) =>
-  <Action perform={history => history.push(createPathFromProps(props), props.state)}/>
+export const Push = ({ path, state }) =>
+  <Action perform={history => history.push(path, state)}/>
 
 Push.propTypes = {
   path: PropTypes.string,
-  pathname: PropTypes.string,
-  search: PropTypes.string,
-  hash: PropTypes.string,
   state: PropTypes.any
 }
 
-export const Replace = (props) =>
-  <Action perform={history => history.replace(createPathFromProps(props), props.state)}/>
+export const Replace = ({ path, state }) =>
+  <Action perform={history => history.replace(path, state)}/>
 
 Replace.propTypes = Push.propTypes
 

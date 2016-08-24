@@ -25,13 +25,6 @@ describe('BrowserHistory', () => {
       render(<BrowserHistory children={children}/>, node)
     })
 
-    describe('with props', () => {
-      it('uses the correct path', (done) => {
-        const children = RenderTestSequences.PushWithProps(done)
-        render(<BrowserHistory children={children}/>, node)
-      })
-    })
-
     describe('with state', () => {
       it('uses a key', (done) => {
         const children = RenderTestSequences.PushWithStateUsesAKey(done)

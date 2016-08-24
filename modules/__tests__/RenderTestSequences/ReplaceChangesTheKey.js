@@ -9,7 +9,7 @@ export default (done) => {
   const steps = [
     ({ location }) => {
       expect(location).toMatch({
-        pathname: '/',
+        path: '/',
         key: undefined
       })
 
@@ -17,7 +17,7 @@ export default (done) => {
     },
     ({ location }) => {
       expect(location).toMatch({
-        pathname: '/hello',
+        path: '/hello',
         state: { the: 'state' },
         key: /^[0-9a-z]+$/
       })
@@ -28,7 +28,7 @@ export default (done) => {
     },
     ({ location }) => {
       expect(location).toMatch({
-        pathname: '/goodbye',
+        path: '/goodbye',
         state: { more: 'state' },
         key: /^[0-9a-z]+$/
       })

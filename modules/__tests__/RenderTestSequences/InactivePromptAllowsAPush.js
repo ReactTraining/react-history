@@ -9,7 +9,7 @@ export default (done) => {
     ({ action, location }) => {
       expect(action).toBe('POP')
       expect(location).toMatch({
-        pathname: '/'
+        path: '/'
       })
 
       return (
@@ -22,7 +22,7 @@ export default (done) => {
     ({ action, location }) => {
       expect(action).toBe('PUSH')
       expect(location).toMatch({
-        pathname: '/hello'
+        path: '/hello'
       })
 
       return null

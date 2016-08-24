@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import { parsePath } from './PathUtils'
 import {
   action as actionType,
   historyContext as historyContextType,
@@ -30,18 +29,10 @@ class HistoryProvider extends React.Component {
   render() {
     const { action, location, historyContext, children } = this.props
 
-    const { path, ...everythingElse } = location
-    const { pathname, search, hash } = parsePath(path)
-
     return children({
       history: historyContext,
       action,
-      location: {
-        ...everythingElse,
-        pathname,
-        search,
-        hash
-      }
+      location
     })
   }
 }
