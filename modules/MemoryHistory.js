@@ -184,6 +184,8 @@ class MemoryHistory extends React.Component {
     const { action, index, entries } = this.state
     const location = entries[index]
     const historyContext = {
+      action,
+      location,
       block: this.block,
       push: this.push,
       replace: this.replace,
@@ -195,8 +197,6 @@ class MemoryHistory extends React.Component {
 
     return (
       <HistoryProvider
-        action={action}
-        location={location}
         historyContext={historyContext}
         children={children}
       />

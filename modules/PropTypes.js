@@ -6,7 +6,15 @@ export const action = PropTypes.oneOf([
   'POP'
 ])
 
+export const location = PropTypes.shape({
+  path: PropTypes.string.isRequired,
+  state: PropTypes.object,
+  key: PropTypes.string
+})
+
 export const historyContext = PropTypes.shape({
+  action: action.isRequired,
+  location: location.isRequired,
   block: PropTypes.func.isRequired,
   push: PropTypes.func.isRequired,
   replace: PropTypes.func.isRequired,
@@ -14,10 +22,4 @@ export const historyContext = PropTypes.shape({
   goBack: PropTypes.func.isRequired,
   goForward: PropTypes.func.isRequired,
   canGo: PropTypes.func
-})
-
-export const location = PropTypes.shape({
-  path: PropTypes.string.isRequired,
-  state: PropTypes.object,
-  key: PropTypes.string
 })

@@ -303,6 +303,8 @@ class BrowserHistory extends React.Component {
     const { children } = this.props
     const { action, location } = this.state
     const historyContext = {
+      action,
+      location,
       block: this.block,
       push: this.push,
       replace: this.replace,
@@ -313,8 +315,6 @@ class BrowserHistory extends React.Component {
 
     return (
       <HistoryProvider
-        action={action}
-        location={location}
         historyContext={historyContext}
         children={children}
       />
