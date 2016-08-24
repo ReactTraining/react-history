@@ -14,7 +14,7 @@ export default (done) => {
 
       return (
         <div>
-          <Prompt message={(_, callback) => { callback(false); done() }}/>
+          <Prompt message="Are you sure?"/>
           <Replace path="/hello"/>
         </div>
       )

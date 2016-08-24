@@ -22,7 +22,7 @@ export default (done) => {
 
       return (
         <div>
-          <Prompt message={(_, callback) => callback(false)}/>
+          <Prompt message="Are you sure?"/>
           <Back/>
         </div>
       )

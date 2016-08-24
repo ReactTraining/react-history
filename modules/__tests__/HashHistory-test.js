@@ -76,24 +76,33 @@ describe('HashHistory', () => {
   })
 
   describe('prompt', () => {
+    const declineAndFinish = (done) =>
+      (_, callback) => {
+        callback(false)
+        done()
+      }
+
+    const decline = (_, callback) =>
+      callback(false)
+
     it('blocks a push', (done) => {
       const children = RenderTestSequences.PromptBlocksAPush(done)
-      render(<HashHistory children={children}/>, node)
+      render(<HashHistory getUserConfirmation={declineAndFinish(done)} children={children}/>, node)
     })
 
     it('blocks a replace', (done) => {
       const children = RenderTestSequences.PromptBlocksAReplace(done)
-      render(<HashHistory children={children}/>, node)
+      render(<HashHistory getUserConfirmation={declineAndFinish(done)} children={children}/>, node)
     })
 
     it('blocks the back button or go(-1)', (done) => {
       const children = RenderTestSequences.PromptBlocksTheBackButton(done)
-      render(<HashHistory children={children}/>, node)
+      render(<HashHistory getUserConfirmation={decline} children={children}/>, node)
     })
 
     it('blocks the forward button or go(1)', (done) => {
       const children = RenderTestSequences.PromptBlocksTheForwardButton(done)
-      render(<HashHistory children={children}/>, node)
+      render(<HashHistory getUserConfirmation={decline} children={children}/>, node)
     })
   })
 

@@ -61,48 +61,34 @@ describe('MemoryHistory', () => {
     })
   })
 
-  describe('with a basename', () => {
-    describe('push', () => {
-      it('emits a new location', (done) => {
-        const children = RenderTestSequences.PushEmitsANewLocation(done)
-        render(<MemoryHistory basename="/base" children={children}/>, node)
-      })
-    })
-
-    describe('replace', () => {
-      it('emits a new location', (done) => {
-        const children = RenderTestSequences.ReplaceEmitsANewLocation(done)
-        render(<MemoryHistory basename="/base" children={children}/>, node)
-      })
-    })
-
-    describe('pop', () => {
-      it('emits a new location', (done) => {
-        const children = RenderTestSequences.PopEmitsANewLocation(done)
-        render(<MemoryHistory basename="/base" children={children}/>, node)
-      })
-    })
-  })
-
   describe('prompt', () => {
+    const declineAndFinish = (done) =>
+      (_, callback) => {
+        callback(false)
+        done()
+      }
+
+    const decline = (_, callback) =>
+      callback(false)
+
     it('blocks a push', (done) => {
       const children = RenderTestSequences.PromptBlocksAPush(done)
-      render(<MemoryHistory children={children}/>, node)
+      render(<MemoryHistory getUserConfirmation={declineAndFinish(done)} children={children}/>, node)
     })
 
     it('blocks a replace', (done) => {
       const children = RenderTestSequences.PromptBlocksAReplace(done)
-      render(<MemoryHistory children={children}/>, node)
+      render(<MemoryHistory getUserConfirmation={declineAndFinish(done)} children={children}/>, node)
     })
 
     it('blocks the back button or go(-1)', (done) => {
       const children = RenderTestSequences.PromptBlocksTheBackButton(done)
-      render(<MemoryHistory children={children}/>, node)
+      render(<MemoryHistory getUserConfirmation={decline} children={children}/>, node)
     })
 
     it('blocks the forward button or go(1)', (done) => {
       const children = RenderTestSequences.PromptBlocksTheForwardButton(done)
-      render(<MemoryHistory children={children}/>, node)
+      render(<MemoryHistory getUserConfirmation={decline} children={children}/>, node)
     })
   })
 

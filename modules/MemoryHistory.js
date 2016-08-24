@@ -12,10 +12,11 @@ const clamp = (n, lowerBound, upperBound) =>
  */
 class MemoryHistory extends React.Component {
   static propTypes = {
+    children: PropTypes.func.isRequired,
+    getUserConfirmation: PropTypes.func,
     initialEntries: PropTypes.array,
     initialIndex: PropTypes.number,
     keyLength: PropTypes.number,
-    children: PropTypes.func.isRequired
   }
 
   static defaultProps = {
@@ -37,8 +38,8 @@ class MemoryHistory extends React.Component {
 
   block = (prompt) => {
     invariant(
-      typeof prompt === 'function',
-      'A <MemoryHistory> prompt must be a function'
+      typeof prompt === 'string' || typeof prompt === 'function',
+      'A <MemoryHistory> prompt must be a string or a function'
     )
 
     warning(
@@ -55,10 +56,20 @@ class MemoryHistory extends React.Component {
   }
 
   confirmTransitionTo(action, location, callback) {
-    const prompt = this.prompt
+    let prompt = this.prompt
 
-    if (typeof prompt === 'function') {
-      prompt({ action, location }, callback)
+    if (prompt) {
+      if (typeof prompt === 'function')
+        prompt = prompt(location, action)
+
+      if (this.props.getUserConfirmation) {
+        this.props.getUserConfirmation(prompt, callback)
+      } else {
+        warning(
+          false,
+          '<MemoryHistory> needs a getUserConfirmation prop in order to use a <Prompt>'
+        )
+      }
     } else {
       callback(true)
     }

@@ -33,13 +33,17 @@ const getHistoryState = () => {
 class BrowserHistory extends React.Component {
   static propTypes = {
     basename: PropTypes.string,
-    keyLength: PropTypes.number,
-    children: PropTypes.func.isRequired
+    children: PropTypes.func.isRequired,
+    getUserConfirmation: PropTypes.func,
+    keyLength: PropTypes.number
   }
 
   static defaultProps = {
     basename: '',
-    keyLength: 6
+    keyLength: 6,
+    getUserConfirmation(message, callback) {
+      callback(window.confirm(message)) // eslint-disable-line no-alert
+    }
   }
 
   state = {
@@ -90,12 +94,13 @@ class BrowserHistory extends React.Component {
   }
 
   confirmTransitionTo(action, location, callback) {
-    const prompt = this.prompt
+    let prompt = this.prompt
 
-    if (typeof prompt === 'string') {
-      callback(window.confirm(prompt)) // eslint-disable-line no-alert
-    } else if (typeof prompt === 'function') {
-      prompt({ action, location }, callback)
+    if (prompt) {
+      if (typeof prompt === 'function')
+        prompt = prompt(location, action)
+
+      this.props.getUserConfirmation(prompt, callback)
     } else {
       callback(true)
     }

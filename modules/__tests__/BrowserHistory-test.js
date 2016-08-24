@@ -86,24 +86,33 @@ describe('BrowserHistory', () => {
   })
 
   describe('prompt', () => {
+    const declineAndFinish = (done) =>
+      (_, callback) => {
+        callback(false)
+        done()
+      }
+
+    const decline = (_, callback) =>
+      callback(false)
+
     it('blocks a push', (done) => {
       const children = RenderTestSequences.PromptBlocksAPush(done)
-      render(<BrowserHistory children={children}/>, node)
+      render(<BrowserHistory getUserConfirmation={declineAndFinish(done)} children={children}/>, node)
     })
 
     it('blocks a replace', (done) => {
       const children = RenderTestSequences.PromptBlocksAReplace(done)
-      render(<BrowserHistory children={children}/>, node)
+      render(<BrowserHistory getUserConfirmation={declineAndFinish(done)} children={children}/>, node)
     })
 
     it('blocks the back button or go(-1)', (done) => {
       const children = RenderTestSequences.PromptBlocksTheBackButton(done)
-      render(<BrowserHistory children={children}/>, node)
+      render(<BrowserHistory getUserConfirmation={decline} children={children}/>, node)
     })
 
     it('blocks the forward button or go(1)', (done) => {
       const children = RenderTestSequences.PromptBlocksTheForwardButton(done)
-      render(<BrowserHistory children={children}/>, node)
+      render(<BrowserHistory getUserConfirmation={decline} children={children}/>, node)
     })
   })
 
