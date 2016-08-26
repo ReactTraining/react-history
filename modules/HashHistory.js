@@ -268,19 +268,19 @@ class HashHistory extends React.Component {
     }
   }
 
-  revertPop(popLocation) {
-    const { location, allPaths } = this.state
+  revertPop(fromLocation) {
+    const { location: toLocation, allPaths } = this.state
 
     // TODO: We could probably make this more reliable by
     // keeping a list of paths we've seen in sessionStorage.
     // Instead, we just default to 0 for paths we don't know.
 
-    let toIndex = allPaths.lastIndexOf(location.path)
+    let toIndex = allPaths.lastIndexOf(toLocation.path)
 
     if (toIndex === -1)
       toIndex = 0
 
-    let fromIndex = allPaths.lastIndexOf(popLocation.path)
+    let fromIndex = allPaths.lastIndexOf(fromLocation.path)
 
     if (fromIndex === -1)
       fromIndex = 0
@@ -289,7 +289,7 @@ class HashHistory extends React.Component {
 
     if (delta) {
       this.forceNextPop = true
-      window.history.go(delta)
+      this.go(delta)
     }
   }
 

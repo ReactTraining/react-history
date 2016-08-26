@@ -1,6 +1,7 @@
 import warning from 'warning'
 import invariant from 'invariant'
 import React, { PropTypes } from 'react'
+import { stripPrefix } from './PathUtils'
 import { createKey } from './LocationKeys'
 import HistoryProvider from './HistoryProvider'
 import {
@@ -9,9 +10,6 @@ import {
   supportsHistory,
   supportsPopStateOnHashChange
 } from './DOMUtils'
-import {
-  stripPrefix
-} from './PathUtils'
 
 const PopStateEvent = 'popstate'
 const HashChangeEvent = 'hashchange'
@@ -245,19 +243,19 @@ class BrowserHistory extends React.Component {
     }
   }
 
-  revertPop(popLocation) {
-    const { location, allKeys } = this.state
+  revertPop(fromLocation) {
+    const { location: toLocation, allKeys } = this.state
 
     // TODO: We could probably make this more reliable by
     // keeping a list of keys we've seen in sessionStorage.
     // Instead, we just default to 0 for keys we don't know.
 
-    let toIndex = allKeys.indexOf(location.key)
+    let toIndex = allKeys.indexOf(toLocation.key)
 
     if (toIndex === -1)
       toIndex = 0
 
-    let fromIndex = allKeys.indexOf(popLocation.key)
+    let fromIndex = allKeys.indexOf(fromLocation.key)
 
     if (fromIndex === -1)
       fromIndex = 0
@@ -266,7 +264,7 @@ class BrowserHistory extends React.Component {
 
     if (delta) {
       this.forceNextPop = true
-      window.history.go(delta)
+      this.go(delta)
     }
   }
 
