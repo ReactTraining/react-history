@@ -6,7 +6,7 @@
 [npm-badge]: https://img.shields.io/npm/v/react-history.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/react-history
 
-[`react-history`](https://www.npmjs.com/package/react-history) provides tools to manage the URL history using [React](https://facebook.github.io/react).
+[`react-history`](https://www.npmjs.com/package/react-history) provides tools to manage session history using [React](https://facebook.github.io/react). In web browsers, this library also transparently manages changes to the URL.
 
 ## Installation
 
