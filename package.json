@@ -16,9 +16,7 @@
     "lint": "eslint modules"
   },
   "dependencies": {
-    "history": "^4.0.0-0",
-    "invariant": "^2.2.1",
-    "warning": "^3.0.0"
+    "history": "^4.0.0-0"
   },
   "peerDependencies": {
     "react": "15.x",
