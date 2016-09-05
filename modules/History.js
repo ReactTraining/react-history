@@ -76,13 +76,7 @@ class History extends React.Component {
   }
 
   render() {
-    const { action, location, ...history } = this.getHistoryContext()
-
-    return this.props.children({
-      action,
-      location,
-      history
-    })
+    return this.props.children(this.getHistoryContext())
   }
 }
 
