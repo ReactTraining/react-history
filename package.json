@@ -1,7 +1,7 @@
 {
   "name": "react-history",
   "version": "0.11.0",
-  "description": "Manage the URL with React",
+  "description": "Manage session history with React",
   "repository": "ReactTraining/react-history",
   "author": "Michael Jackson",
   "license": "MIT",
