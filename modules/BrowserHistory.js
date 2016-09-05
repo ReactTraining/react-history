@@ -1,9 +1,13 @@
 import React, { PropTypes } from 'react'
-import createHistory from 'history/createBrowserHistory'
+import createBrowserHistory from 'history/createBrowserHistory'
 import History from './History'
 
-const BrowserHistory = ({ children, ...props }) => (
-  <History {...createHistory(props)} children={children}/>
+const BrowserHistory = ({ children, ...historyOptions }) => (
+  <History
+    children={children}
+    createHistory={createBrowserHistory}
+    {...historyOptions}
+  />
 )
 
 BrowserHistory.propTypes = {
