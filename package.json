@@ -51,10 +51,6 @@
     "readline-sync": "^1.4.4",
     "webpack": "^1.13.1"
   },
-  "tags": [
-    "react",
-    "history"
-  ],
   "keywords": [
     "react",
     "history",
