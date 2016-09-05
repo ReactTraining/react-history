@@ -15,11 +15,11 @@ export const location = PropTypes.shape({
 export const historyContext = PropTypes.shape({
   action: action.isRequired,
   location: location.isRequired,
-  block: PropTypes.func.isRequired,
   push: PropTypes.func.isRequired,
   replace: PropTypes.func.isRequired,
   go: PropTypes.func.isRequired,
   goBack: PropTypes.func.isRequired,
   goForward: PropTypes.func.isRequired,
-  canGo: PropTypes.func
+  canGo: PropTypes.func,
+  block: PropTypes.func.isRequired
 })
