@@ -24,10 +24,10 @@ import { BrowserHistory } from 'react-history'
 var BrowserHistory = require('react-history').BrowserHistory
 ```
 
-The UMD build is also available on [npmcdn](https://npmcdn.com):
+The UMD build is also available on [unpkg](https://unpkg.com):
 
 ```html
-<script src="https://npmcdn.com/react-history/umd/react-history.min.js"></script>
+<script src="https://unpkg.com/react-history/umd/react-history.min.js"></script>
 ```
 
 You can find the library on `window.ReactHistory`.
