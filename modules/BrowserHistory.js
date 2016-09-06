@@ -6,7 +6,7 @@ const BrowserHistory = ({ children, ...historyOptions }) => (
   <History
     children={children}
     createHistory={createBrowserHistory}
-    {...historyOptions}
+    historyOptions={historyOptions}
   />
 )
 

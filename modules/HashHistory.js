@@ -6,7 +6,7 @@ const HashHistory = ({ children, ...historyOptions}) => (
   <History
     children={children}
     createHistory={createHashHistory}
-    {...historyOptions}
+    historyOptions={historyOptions}
   />
 )
 

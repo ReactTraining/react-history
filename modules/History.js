@@ -10,6 +10,7 @@ class History extends React.Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     createHistory: PropTypes.func.isRequired,
+    historyOptions: PropTypes.object
   }
 
   static childContextTypes = {
@@ -43,8 +44,10 @@ class History extends React.Component {
   }
 
   setupHistory(props) {
-    const { createHistory, children, ...historyOptions } = props // eslint-disable-line
+    const { createHistory, historyOptions } = props
+
     this.history = createHistory(historyOptions)
+
     this.setState({
       action: 'POP',
       location: this.history.getCurrentLocation()
@@ -56,8 +59,13 @@ class History extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { children:_1, createHistory:_2, ...prevHistoryOptions } = this.props // eslint-disable-line
-    const { children:_3, createHistory:_4, ...nextHistoryOptions } = nextProps // eslint-disable-line
+    const prevHistoryOptions = this.props.historyOptions
+    const nextHistoryOptions = nextProps.historyOptions
+
+    // TODO: Each type of history should have the ability to determine
+    // whether a prop change requires creation of a new history object.
+    // For example, <MemoryHistory> doesn't need a new history instance
+    // when the initialEntries prop changes.
     let changed = false
     for (const key in nextHistoryOptions) {
       if (nextHistoryOptions[key] !== prevHistoryOptions[key]) {
@@ -65,6 +73,7 @@ class History extends React.Component {
         break
       }
     }
+
     if (changed) {
       this.unlisten()
       this.setupHistory(nextProps)

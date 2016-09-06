@@ -12,8 +12,6 @@ describe('History', () => {
   }
 
   it('does not set up a new history instance when history option props stay the same', () => {
-    const PROP = 'test'
-
     let callCount = 0
     const createHistory = () => {
       callCount++
@@ -24,16 +22,16 @@ describe('History', () => {
     render((
       <History
         createHistory={createHistory}
+        historyOptions={{ prop: 'a' }}
         children={() => <div>{callCount}</div>}
-        someProp={PROP}
       />
     ), div, () => {
       expect(callCount).toEqual(1)
       render((
         <History
           createHistory={createHistory}
+          historyOptions={{ prop: 'a' }}
           children={() => <div>{callCount}</div>}
-          someProp={PROP}
         />
       ), div, () => {
         expect(callCount).toEqual(1)
@@ -43,9 +41,6 @@ describe('History', () => {
   })
 
   it('sets up a new history instance when history option props change', () => {
-    const FIRST_PROP = 'test1'
-    const DIFFERENT_PROP = 'test2'
-
     let callCount = 0
     const createHistory = () => {
       callCount++
@@ -55,16 +50,16 @@ describe('History', () => {
 
     render((
       <History
-        someProp={FIRST_PROP}
         createHistory={createHistory}
+        historyOptions={{ prop: 'a' }}
         children={() => <div>{callCount}</div>}
       />
     ), div, () => {
       expect(callCount).toEqual(1)
       render((
         <History
-          someProp={DIFFERENT_PROP}
           createHistory={createHistory}
+          historyOptions={{ prop: 'b' }}
           children={() => <div>{callCount}</div>}
         />
       ), div, () => {

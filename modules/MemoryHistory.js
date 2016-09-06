@@ -6,7 +6,7 @@ const MemoryHistory = ({ children, ...historyOptions }) => (
   <History
     children={children}
     createHistory={createMemoryHistory}
-    {...historyOptions}
+    historyOptions={historyOptions}
   />
 )
 
