@@ -7,7 +7,9 @@ export const action = PropTypes.oneOf([
 ])
 
 export const location = PropTypes.shape({
-  path: PropTypes.string.isRequired,
+  pathname: PropTypes.string.isRequired,
+  search: PropTypes.string.isRequired,
+  hash: PropTypes.string.isRequired,
   state: PropTypes.object,
   key: PropTypes.string
 })

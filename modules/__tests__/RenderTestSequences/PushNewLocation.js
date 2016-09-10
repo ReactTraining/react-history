@@ -1,27 +1,20 @@
 import React from 'react'
 import expect from 'expect'
-import { Push, Pop } from '../../Actions'
+import { Push } from '../../Actions'
 import createRenderProp from './createRenderProp'
 
 export default (done) => {
   const steps = [
     ({ location }) => {
       expect(location).toMatch({
-        path: '/'
+        pathname: '/'
       })
 
       return <Push path="/hello"/>
     },
     ({ location }) => {
       expect(location).toMatch({
-        path: '/hello'
-      })
-
-      return <Pop/>
-    },
-    ({ location }) => {
-      expect(location).toMatch({
-        path: '/'
+        pathname: '/hello'
       })
 
       return null

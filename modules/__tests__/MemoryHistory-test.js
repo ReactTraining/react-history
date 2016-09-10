@@ -15,12 +15,12 @@ describe('MemoryHistory', () => {
 
   describe('push', () => {
     it('emits a PUSH action', (done) => {
-      const children = RenderTestSequences.PushEmitsAPushAction(done)
+      const children = RenderTestSequences.PushAction(done)
       render(<MemoryHistory children={children}/>, node)
     })
 
     it('emits a new location', (done) => {
-      const children = RenderTestSequences.PushEmitsANewLocation(done)
+      const children = RenderTestSequences.PushNewLocation(done)
       render(<MemoryHistory children={children}/>, node)
     })
 
@@ -34,12 +34,12 @@ describe('MemoryHistory', () => {
 
   describe('replace', () => {
     it('emits a REPLACE action', (done) => {
-      const children = RenderTestSequences.ReplaceEmitsAReplaceAction(done)
+      const children = RenderTestSequences.ReplaceAction(done)
       render(<MemoryHistory children={children}/>, node)
     })
 
     it('emits a new location', (done) => {
-      const children = RenderTestSequences.ReplaceEmitsANewLocation(done)
+      const children = RenderTestSequences.ReplaceNewLocation(done)
       render(<MemoryHistory children={children}/>, node)
     })
 
@@ -51,12 +51,12 @@ describe('MemoryHistory', () => {
 
   describe('pop', () => {
     it('emits a POP action', (done) => {
-      const children = RenderTestSequences.PopEmitsAPopAction(done)
+      const children = RenderTestSequences.PopAction(done)
       render(<MemoryHistory children={children}/>, node)
     })
 
     it('emits a new location', (done) => {
-      const children = RenderTestSequences.PopEmitsANewLocation(done)
+      const children = RenderTestSequences.PopNewLocation(done)
       render(<MemoryHistory children={children}/>, node)
     })
   })

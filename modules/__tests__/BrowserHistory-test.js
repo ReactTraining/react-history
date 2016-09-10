@@ -16,12 +16,12 @@ describe('BrowserHistory', () => {
 
   describe('push', () => {
     it('emits a PUSH action', (done) => {
-      const children = RenderTestSequences.PushEmitsAPushAction(done)
+      const children = RenderTestSequences.PushAction(done)
       render(<BrowserHistory children={children}/>, node)
     })
 
     it('emits a new location', (done) => {
-      const children = RenderTestSequences.PushEmitsANewLocation(done)
+      const children = RenderTestSequences.PushNewLocation(done)
       render(<BrowserHistory children={children}/>, node)
     })
 
@@ -35,12 +35,12 @@ describe('BrowserHistory', () => {
 
   describe('replace', () => {
     it('emits a REPLACE action', (done) => {
-      const children = RenderTestSequences.ReplaceEmitsAReplaceAction(done)
+      const children = RenderTestSequences.ReplaceAction(done)
       render(<BrowserHistory children={children}/>, node)
     })
 
     it('emits a new location', (done) => {
-      const children = RenderTestSequences.ReplaceEmitsANewLocation(done)
+      const children = RenderTestSequences.ReplaceNewLocation(done)
       render(<BrowserHistory children={children}/>, node)
     })
 
@@ -52,12 +52,12 @@ describe('BrowserHistory', () => {
 
   describe('pop', () => {
     it('emits a POP action', (done) => {
-      const children = RenderTestSequences.PopEmitsAPopAction(done)
+      const children = RenderTestSequences.PopAction(done)
       render(<BrowserHistory children={children}/>, node)
     })
 
     it('emits a new location', (done) => {
-      const children = RenderTestSequences.PopEmitsANewLocation(done)
+      const children = RenderTestSequences.PopNewLocation(done)
       render(<BrowserHistory children={children}/>, node)
     })
   })
@@ -65,21 +65,21 @@ describe('BrowserHistory', () => {
   describe('with a basename', () => {
     describe('push', () => {
       it('emits a new location', (done) => {
-        const children = RenderTestSequences.PushEmitsANewLocation(done)
+        const children = RenderTestSequences.PushNewLocation(done)
         render(<BrowserHistory basename="/base" children={children}/>, node)
       })
     })
 
     describe('replace', () => {
       it('emits a new location', (done) => {
-        const children = RenderTestSequences.ReplaceEmitsANewLocation(done)
+        const children = RenderTestSequences.ReplaceNewLocation(done)
         render(<BrowserHistory basename="/base" children={children}/>, node)
       })
     })
 
     describe('pop', () => {
       it('emits a new location', (done) => {
-        const children = RenderTestSequences.PopEmitsANewLocation(done)
+        const children = RenderTestSequences.PopNewLocation(done)
         render(<BrowserHistory basename="/base" children={children}/>, node)
       })
     })

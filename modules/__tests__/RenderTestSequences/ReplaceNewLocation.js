@@ -7,14 +7,14 @@ export default (done) => {
   const steps = [
     ({ location }) => {
       expect(location).toMatch({
-        path: '/'
+        pathname: '/'
       })
 
       return <Replace path="/hello"/>
     },
     ({ location }) => {
       expect(location).toMatch({
-        path: '/hello'
+        pathname: '/hello'
       })
 
       return null

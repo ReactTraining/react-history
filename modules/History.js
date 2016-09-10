@@ -19,43 +19,18 @@ class History extends React.Component {
 
   getChildContext() {
     return {
-      history: this.getHistoryContext()
+      history: this.history
     }
-  }
-
-  getHistoryContext() {
-    const { action, location } = this.state
-    const { history } = this
-
-    return {
-      action,
-      location,
-      ...history
-    }
-  }
-
-  state = {
-    action: null,
-    location: null
-  }
-
-  componentWillMount() {
-    this.setupHistory(this.props)
   }
 
   setupHistory(props) {
     const { createHistory, historyOptions } = props
-
     this.history = createHistory(historyOptions)
+    this.unlisten = this.history.listen(() => this.forceUpdate())
+  }
 
-    this.setState({
-      action: 'POP',
-      location: this.history.getCurrentLocation()
-    })
-
-    this.unlisten = this.history.listen((location, action) => {
-      this.setState({ action, location })
-    })
+  componentWillMount() {
+    this.setupHistory(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -85,7 +60,14 @@ class History extends React.Component {
   }
 
   render() {
-    return this.props.children(this.getHistoryContext())
+    const history = this.history
+    const { location, action } = history
+
+    return this.props.children({
+      history,
+      location,
+      action
+    })
   }
 }
 

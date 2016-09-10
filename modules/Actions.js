@@ -29,16 +29,22 @@ class Action extends React.Component {
   }
 }
 
-export const Push = ({ path, state }) =>
-  <Action perform={history => history.push(path, state)}/>
+export const Push = ({ location, path, state }) =>
+  <Action perform={history => history.push(location || path, state)}/>
 
 Push.propTypes = {
   path: PropTypes.string,
-  state: PropTypes.any
+  state: PropTypes.object,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    search: PropTypes.string,
+    hash: PropTypes.string,
+    state: PropTypes.object
+  })
 }
 
-export const Replace = ({ path, state }) =>
-  <Action perform={history => history.replace(path, state)}/>
+export const Replace = ({ location, path, state }) =>
+  <Action perform={history => history.replace(location || path, state)}/>
 
 Replace.propTypes = Push.propTypes
 
