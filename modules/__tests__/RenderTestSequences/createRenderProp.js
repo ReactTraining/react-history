@@ -4,7 +4,12 @@ export default (steps, done) => {
   return (...args) => {
     let value
     try {
-      value = steps[index++](...args)
+      const nextStep = steps[index++]
+
+      if (!nextStep)
+        throw new Error('Test is missing step ' + index)
+
+      value = nextStep(...args)
 
       if (index === steps.length)
         done()
