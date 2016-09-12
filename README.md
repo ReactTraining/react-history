@@ -6,9 +6,7 @@
 [npm-badge]: https://img.shields.io/npm/v/react-history.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/react-history
 
-[`react-history`](https://www.npmjs.com/package/react-history) provides tools to manage session history using [React](https://facebook.github.io/react). In web browsers, this library also transparently manages changes to the URL which makes it easier for creators of single-page applications to support things like bookmarks and the back button.
-
-This library is a React wrapper for the [`history`](https://www.npmjs.com/package/history) package.
+[`react-history`](https://www.npmjs.com/package/react-history) provides tools to manage session history using [React](https://facebook.github.io/react). It's a thin wrapper around the [`history`](https://www.npmjs.com/package/history) package. In web browsers, this library also transparently manages changes to the URL which makes it easier for creators of single-page applications to support things like bookmarks and the back button.
 
 ## Installation
 
