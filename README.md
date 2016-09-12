@@ -87,7 +87,7 @@ The props for each `<History>`, along with their default values are:
   hashType="slash"          // The hash type to use (see below)
   // A function to use to confirm navigation with the user (see below)
   getUserConfirmation={(message, callback) => callback(window.confirm(message))}
-})
+/>
 ```
 
 ### Listening
@@ -97,7 +97,10 @@ When you render a `<History>` it will emit an object with an `action` and a `loc
 ```js
 <History>
   {({ history, action, location }) => (
-    <p>The current URL is {location.pathname}{location.search}{location.hash}. You arrived at this URL via a {action} action.</p>
+    <div>
+      <p>The current URL is {location.pathname}{location.search}{location.hash}.</p>
+      <p>You arrived at this URL via a {action} action.</p>
+    </div>
   )}
 </History>
 ```
@@ -204,3 +207,50 @@ const Form = React.createClass({
 ```
 
 **Note:** You'll need to provide a `getUserConfirmation` prop to use `<Prompt>`s with `<MemoryHistory>` (see [the `history` docs](https://github.com/mjackson/history#customizing-the-confirm-dialog)).
+
+### Using a Base URL
+
+If all the URLs in your app are relative to some other "base" URL, use the `basename` option. This option transparently adds the given string to the front of all URLs you use.
+
+```js
+// All URLs transparently have the "/the/base" prefix.
+<History basename="/the/base">
+{({ location }) => (
+  // When the URL is /the/base/home, location.pathname is just /home.
+  <p>The current pathname is {location.pathname}.</p>
+)}
+</History>
+```
+
+**Note:** `basename` is not suppported in `<MemoryHistory>` where you have full control over all your URLs.
+
+### Forcing Full Page Refreshes in `<BrowserHistory>`
+
+By default `<BrowserHistory>` uses HTML5 `pushState` and `replaceState` to prevent reloading the entire page from the server while navigating around. If instead you would like to reload as the URL changes, use the `forceRefresh` option.
+
+```js
+<BrowserHistory forceRefresh/>
+```
+
+### Modifying the Hash Type in `<HashHistory>`
+
+By default `<HashHistory>` uses a leading slash in hash-based URLs. You can use the `hashType` option to use a different hash formatting.
+
+
+```js
+// The default is to add a leading / to all hashes, so your URLs
+// are like /#/inbox/5. This is also know as the "slash" hash type.
+<HashHistory hashType="slash"/>
+
+// You can also omit the leading slash using the "noslash" hash type.
+// This gives you URLs like /#inbox/5.
+<HashHistory hashType="noslash"/>
+
+// Support for Google's legacy AJAX URL "hashbang" format gives you
+// URLs like /#!/inbox/5.
+<HashHistory hashType="hashbang"/>
+```
+
+## Thanks
+
+Thanks to [BrowserStack](https://www.browserstack.com/) for providing the infrastructure that allows us to run our build in real browsers.
