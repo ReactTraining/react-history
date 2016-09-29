@@ -31,7 +31,7 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-1": "^6.5.0",
     "eslint": "^3.3.1",
-    "eslint-plugin-import": "^1.8.1",
+    "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-react": "^6.1.2",
     "expect": "^1.20.1",
     "gzip-size": "^3.0.0",
