@@ -7,11 +7,6 @@ import {
  * The common public API for all *History components.
  */
 class History extends React.Component {
-  static propTypes = {
-    children: PropTypes.func.isRequired,
-    createHistory: PropTypes.func.isRequired,
-    historyOptions: PropTypes.object
-  }
 
   static childContextTypes = {
     history: historyContextType.isRequired
@@ -68,6 +63,14 @@ class History extends React.Component {
       location,
       action
     })
+  }
+}
+
+if (__DEV__) {
+  History.propTypes = {
+    children: PropTypes.func.isRequired,
+    createHistory: PropTypes.func.isRequired,
+    historyOptions: PropTypes.object
   }
 }
 

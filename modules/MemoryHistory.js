@@ -10,12 +10,14 @@ const MemoryHistory = ({ children, ...historyOptions }) => (
   />
 )
 
-MemoryHistory.propTypes = {
-  children: PropTypes.func.isRequired,
-  getUserConfirmation: PropTypes.func,
-  initialEntries: PropTypes.array,
-  initialIndex: PropTypes.number,
-  keyLength: PropTypes.number
+if (__DEV__) {
+  MemoryHistory.propTypes = {
+    children: PropTypes.func.isRequired,
+    getUserConfirmation: PropTypes.func,
+    initialEntries: PropTypes.array,
+    initialIndex: PropTypes.number,
+    keyLength: PropTypes.number
+  }
 }
 
 export default MemoryHistory

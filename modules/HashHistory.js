@@ -10,15 +10,17 @@ const HashHistory = ({ children, ...historyOptions}) => (
   />
 )
 
-HashHistory.propTypes = {
-  children: PropTypes.func.isRequired,
-  basename: PropTypes.string,
-  getUserConfirmation: PropTypes.func,
-  hashType: PropTypes.oneOf([
-    'hashbang',
-    'noslash',
-    'slash'
-  ])
+if (__DEV__) {
+  HashHistory.propTypes = {
+    children: PropTypes.func.isRequired,
+    basename: PropTypes.string,
+    getUserConfirmation: PropTypes.func,
+    hashType: PropTypes.oneOf([
+      'hashbang',
+      'noslash',
+      'slash'
+    ])
+  }
 }
 
 export default HashHistory

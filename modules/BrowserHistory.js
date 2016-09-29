@@ -10,12 +10,14 @@ const BrowserHistory = ({ children, ...historyOptions }) => (
   />
 )
 
-BrowserHistory.propTypes = {
-  children: PropTypes.func.isRequired,
-  basename: PropTypes.string,
-  forceRefresh: PropTypes.bool,
-  getUserConfirmation: PropTypes.func,
-  keyLength: PropTypes.number
+if (__DEV__) {
+  BrowserHistory.propTypes = {
+    children: PropTypes.func.isRequired,
+    basename: PropTypes.string,
+    forceRefresh: PropTypes.bool,
+    getUserConfirmation: PropTypes.func,
+    keyLength: PropTypes.number
+  }
 }
 
 export default BrowserHistory

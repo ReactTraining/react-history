@@ -8,14 +8,6 @@ class Prompt extends React.Component {
     history: historyContextType.isRequired
   }
 
-  static propTypes = {
-    when: PropTypes.bool,
-    message: PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.string
-    ]).isRequired
-  }
-
   static defaultProps = {
     when: true
   }
@@ -51,6 +43,16 @@ class Prompt extends React.Component {
 
   render() {
     return null
+  }
+}
+
+if (__DEV__) {
+  Prompt.propTypes = {
+    when: PropTypes.bool,
+    message: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.string
+    ]).isRequired
   }
 }
 
