@@ -7,7 +7,6 @@ import {
  * The common public API for all *History components.
  */
 class History extends React.Component {
-
   static childContextTypes = {
     history: historyContextType.isRequired
   }
