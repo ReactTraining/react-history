@@ -8,10 +8,6 @@ class Action extends React.Component {
     history: historyContextType.isRequired
   }
 
-  static propTypes = {
-    perform: PropTypes.func.isRequired
-  }
-
   performAction() {
     this.props.perform(this.context.history)
   }
@@ -29,30 +25,41 @@ class Action extends React.Component {
   }
 }
 
+if (__DEV__) {
+  Action.propTypes = {
+    perform: PropTypes.func.isRequired
+  }
+}
+
 export const Push = ({ location, path, state }) =>
   <Action perform={history => history.push(location || path, state)}/>
 
-Push.propTypes = {
-  path: PropTypes.string,
-  state: PropTypes.object,
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-    search: PropTypes.string,
-    hash: PropTypes.string,
-    state: PropTypes.object
-  })
+if (__DEV__) {
+  Push.propTypes = {
+    path: PropTypes.string,
+    state: PropTypes.object,
+    location: PropTypes.shape({
+      pathname: PropTypes.string,
+      search: PropTypes.string,
+      hash: PropTypes.string,
+      state: PropTypes.object
+    })
+  }
 }
 
 export const Replace = ({ location, path, state }) =>
   <Action perform={history => history.replace(location || path, state)}/>
 
-Replace.propTypes = Push.propTypes
+if (__DEV__)
+  Replace.propTypes = Push.propTypes
 
 export const Pop = ({ go }) =>
   <Action perform={history => history.go(go)}/>
 
-Pop.propTypes = {
-  go: PropTypes.number
+if (__DEV__) {
+  Pop.propTypes = {
+    go: PropTypes.number
+  }
 }
 
 Pop.defaultProps = {
