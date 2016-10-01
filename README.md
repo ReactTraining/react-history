@@ -90,7 +90,7 @@ The props for each `<History>`, along with their default values are:
 
 ### Listening
 
-When you render a `<History>` it will emit an object with an `action` and a `location` object to its `children` function when the URL changes.
+`<History>` elements call their `children` function every time the URL changes.
 
 ```js
 <History>
@@ -103,7 +103,9 @@ When you render a `<History>` it will emit an object with an `action` and a `loc
 </History>
 ```
 
-The `history` object is the same object you'd get if you created your own [`history` object](https://npmjs.com/package/history) directly. Please refer to [the `history` docs](https://github.com/mjackson/history/blob/master/README.md) for more information on how to use it. The `location` and `action` properties are also provided for convenience.
+The `history` object is the same object you'd get if you created your own [`history` object](https://npmjs.com/package/history) directly. Please refer to [the `history` docs](https://github.com/mjackson/history/blob/master/README.md) for more information on how to use it.
+
+The `location` and `action` properties represent the current URL and how we got there.
 
 ### Navigation
 
