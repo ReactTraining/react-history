@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { historyContext as historyContextType } from './PropTypes'
+import { locationsAreEqual } from './LocationUtils'
 
 // intitial key is `null` because JSON.stringify turns undefined into null, and
 // we use this value as the "initial key"
@@ -24,26 +25,6 @@ const restoreKeys = () => {
   } else {
     return initialKeys
   }
-}
-
-const locationsAreEqual = (a, b) => {
-  // If we're on the initial entry and we get a new location descriptor then
-  // neither will have a key, so we compare the path. We have to guard on the
-  // keys so we allow pushing the same path w/ a different key.
-  if (a.key == null && b.key == null)
-    return a.pathname === b.pathname
-
-  // the initial entry has no key, and neither does a pushed location
-  // descriptor, so we use identity for that case
-  if (a === b)
-    return true
-
-  // locations lose their identity after leaving the domain, so we use the key
-  // instead, all locations but the first will have a key
-  if (a.key === b.key)
-    return true
-
-  return false
 }
 
 const saveKeys = (keys) => {
