@@ -39,33 +39,4 @@ describe('History', () => {
       })
     })
   })
-
-  it('sets up a new history instance when history option props change', () => {
-    let callCount = 0
-    const createHistory = () => {
-      callCount++
-      return fakeHistory
-    }
-    const div = document.createElement('div')
-
-    render((
-      <History
-        createHistory={createHistory}
-        historyOptions={{ prop: 'a' }}
-        children={() => <div>{callCount}</div>}
-      />
-    ), div, () => {
-      expect(callCount).toEqual(1)
-      render((
-        <History
-          createHistory={createHistory}
-          historyOptions={{ prop: 'b' }}
-          children={() => <div>{callCount}</div>}
-        />
-      ), div, () => {
-        expect(callCount).toEqual(2)
-        unmountComponentAtNode(div)
-      })
-    })
-  })
 })
