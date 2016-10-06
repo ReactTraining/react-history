@@ -541,7 +541,7 @@ describe.only('ControlledHistory', () => {
         steps: [
           ({ component }) => {
             component.setState({
-              location: { pathname: '/two', state: 'test' },
+              location: { pathname: '/two', state: { v: 'test' } },
               action: 'REPLACE'
             })
           },
@@ -552,7 +552,7 @@ describe.only('ControlledHistory', () => {
             expect(index).toBe(0)
             expect(entries[index].pathname).toEqual('/two')
             expect(entries[index].pathname).toEqual(state.location.pathname)
-            expect(entries[index].state).toEqual(state.location.state)
+            expect(entries[index].state.v).toEqual(state.location.state.v)
             done()
           }
         ]
