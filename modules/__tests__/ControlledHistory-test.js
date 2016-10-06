@@ -38,7 +38,7 @@ const renderTestSequence = ({ history, steps }) => {
 
   class App extends React.Component {
     state = {
-      location: history.getCurrentLocation(),
+      location: history.location,
       action: 'POP'
     }
 
@@ -73,7 +73,7 @@ const renderTestSequence = ({ history, steps }) => {
   render(<App/>, div)
 }
 
-describe('ControlledHistory', () => {
+describe.only('ControlledHistory', () => {
   describe('when the history calls back with a new location', () => {
     describe('and a location is "accepted"', () => {
       it('syncs state on history.push', (done) => {
@@ -81,14 +81,14 @@ describe('ControlledHistory', () => {
           history: createMemoryHistory({ initialEntries: [ '/' ] }),
           steps: [
             ({ history }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(1)
               expect(index).toBe(0)
               history.push('/two')
             },
 
             ({ history, state }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(2)
               expect(index).toBe(1)
               expect(entries[index]).toBe(state.location)
@@ -103,14 +103,14 @@ describe('ControlledHistory', () => {
           history: createMemoryHistory({ initialEntries: [ '/' ] }),
           steps: [
             ({ history }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(1)
               expect(index).toBe(0)
               history.replace('/two')
             },
 
             ({ history, state }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(1)
               expect(index).toBe(0)
               expect(entries[index]).toBe(state.location)
@@ -128,14 +128,14 @@ describe('ControlledHistory', () => {
           }),
           steps: [
             ({ history }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(2)
               expect(index).toBe(0)
               history.goForward()
             },
 
             ({ history, state }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(2)
               expect(index).toBe(1)
               expect(entries[index]).toBe(state.location)
@@ -153,14 +153,14 @@ describe('ControlledHistory', () => {
           }),
           steps: [
             ({ history }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(2)
               expect(index).toBe(1)
               history.goBack()
             },
 
             ({ history, state }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(2)
               expect(index).toBe(0)
               expect(entries[index]).toBe(state.location)
@@ -178,14 +178,14 @@ describe('ControlledHistory', () => {
           }),
           steps: [
             ({ history }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(3)
               expect(index).toBe(0)
               history.go(2)
             },
 
             ({ history, state }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(3)
               expect(index).toBe(2)
               expect(entries[index]).toBe(state.location)
@@ -216,7 +216,7 @@ describe('ControlledHistory', () => {
             () => {},
 
             ({ history }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(3)
               expect(index).toBe(2)
               setTimeout(() => {
@@ -227,7 +227,7 @@ describe('ControlledHistory', () => {
             () => {},
 
             ({ history, state }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(3)
               expect(index).toBe(0)
               expect(entries[index]).toBe(state.location)
@@ -253,7 +253,7 @@ describe('ControlledHistory', () => {
             },
 
             ({ history, state }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(2)
               expect(index).toBe(0)
               expect(entries[index]).toBe(state.location)
@@ -287,7 +287,7 @@ describe('ControlledHistory', () => {
             () => {},
 
             ({ history, state }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(3)
               expect(index).toBe(1)
               expect(entries[index]).toBe(state.location)
@@ -299,7 +299,7 @@ describe('ControlledHistory', () => {
             () => {},
 
             ({ history, state }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(3)
               expect(index).toBe(1)
               expect(entries[index]).toBe(state.location)
@@ -331,12 +331,12 @@ describe('ControlledHistory', () => {
             () => {},
 
             ({ history, state }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(2)
               expect(index).toBe(1)
               // since it was replaced, we won't get it back by identity
               // so we can't check on identity, just values
-              expect(entries[index].path).toBe('/1')
+              expect(entries[index].pathname).toBe('/1')
               expect(entries[index].key).toBe(state.location.key)
               done()
             }
@@ -374,7 +374,7 @@ describe('ControlledHistory', () => {
             () => {},
 
             ({ history, state }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(2)
               expect(index).toBe(0)
               expect(entries[0]).toBe(state.location)
@@ -406,7 +406,7 @@ describe('ControlledHistory', () => {
             () => {},
 
             ({ history, state }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               // can't help it, we get an entry since you can't really
               // control the history of a browser
               expect(entries.length).toBe(3)
@@ -421,7 +421,7 @@ describe('ControlledHistory', () => {
             () => {},
 
             ({ history, state }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               // can't help it, we get an entry since you can't really
               // control the history of a browser
               expect(entries.length).toBe(3)
@@ -456,7 +456,7 @@ describe('ControlledHistory', () => {
             () => {},
 
             ({ history, state }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(2)
               expect(index).toBe(1)
               expect(entries[1]).toBe(state.location)
@@ -496,7 +496,7 @@ describe('ControlledHistory', () => {
             () => {},
 
             ({ history, state }) => {
-              const { entries, index } = history.getState()
+              const { entries, index } = history
               expect(entries.length).toBe(3)
               expect(index).toBe(2)
               expect(entries[2]).toBe(state.location)
@@ -516,18 +516,18 @@ describe('ControlledHistory', () => {
           ({ component }) => {
             setTimeout(() => {
               component.setState({
-                location: { path: '/two', state: { v: 'test' } },
+                location: { pathname: '/two', state: { v: 'test' } },
                 action: 'PUSH'
               })
             }, 0)
           },
 
           ({ history, state }) => {
-            const { entries, index } = history.getState()
+            const { entries, index } = history
             expect(entries.length).toBe(2)
             expect(index).toBe(1)
-            expect(entries[index].path).toEqual('/two')
-            expect(entries[index].path).toEqual(state.location.path)
+            expect(entries[index].pathname).toEqual('/two')
+            expect(entries[index].pathname).toEqual(state.location.pathname)
             expect(entries[index].state).toEqual(state.location.state)
             done()
           }
@@ -541,17 +541,17 @@ describe('ControlledHistory', () => {
         steps: [
           ({ component }) => {
             component.setState({
-              location: { path: '/two', state: 'test' },
+              location: { pathname: '/two', state: 'test' },
               action: 'REPLACE'
             })
           },
 
           ({ history, state }) => {
-            const { entries, index } = history.getState()
+            const { entries, index } = history
             expect(entries.length).toBe(1)
             expect(index).toBe(0)
-            expect(entries[index].path).toEqual('/two')
-            expect(entries[index].path).toEqual(state.location.path)
+            expect(entries[index].pathname).toEqual('/two')
+            expect(entries[index].pathname).toEqual(state.location.pathname)
             expect(entries[index].state).toEqual(state.location.state)
             done()
           }
@@ -584,7 +584,7 @@ describe('ControlledHistory', () => {
 
           ({ history, component }) => {
             const expectedIndex = 2
-            const { entries, index } = history.getState()
+            const { entries, index } = history
             expect(entries.length).toBe(3)
             expect(index).toBe(expectedIndex)
             setTimeout(() => {
@@ -597,11 +597,11 @@ describe('ControlledHistory', () => {
 
           ({ history, state, component }) => {
             const expectedIndex = 1
-            const { entries, index } = history.getState()
+            const { entries, index } = history
             expect(entries.length).toBe(3)
             expect(index).toBe(expectedIndex)
-            expect(entries[index].path).toEqual(paths[expectedIndex])
-            expect(entries[index].path).toEqual(state.location.path)
+            expect(entries[index].pathname).toEqual(paths[expectedIndex])
+            expect(entries[index].pathname).toEqual(state.location.pathname)
             setTimeout(() => {
               component.setState({
                 location: entries[index + 1],
@@ -612,11 +612,11 @@ describe('ControlledHistory', () => {
 
           ({ history, state }) => {
             const expectedIndex = 2
-            const { entries, index } = history.getState()
+            const { entries, index } = history
             expect(entries.length).toBe(3)
             expect(index).toBe(expectedIndex)
-            expect(entries[index].path).toEqual(paths[expectedIndex])
-            expect(entries[index].path).toEqual(state.location.path)
+            expect(entries[index].pathname).toEqual(paths[expectedIndex])
+            expect(entries[index].pathname).toEqual(state.location.pathname)
             done()
           }
         ]

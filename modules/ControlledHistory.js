@@ -31,7 +31,7 @@ const locationsAreEqual = (a, b) => {
   // neither will have a key, so we compare the path. We have to guard on the
   // keys so we allow pushing the same path w/ a different key.
   if (a.key == null && b.key == null)
-    return a.path === b.path
+    return a.pathname === b.pathname
 
   // the initial entry has no key, and neither does a pushed location
   // descriptor, so we use identity for that case
@@ -93,7 +93,7 @@ class ControlledHistory extends React.Component {
 
   constructor(props) {
     super(props)
-    const location = props.history.getCurrentLocation()
+    const location = props.history.location
     const cameBackFromOtherDomain = !!location.key
     this.updatingFromHistoryChange = false
     this.syncingHistory = false
@@ -125,9 +125,9 @@ class ControlledHistory extends React.Component {
         const delta = nextIndex - currentIndex
         history.go(delta)
       } else if (action === 'PUSH') {
-        history.push(location.path, location.state)
+        history.push(location)
       } else if (action === 'REPLACE') {
-        history.replace(location.path, location.state)
+        history.replace(location)
       }
     }
   }
@@ -171,7 +171,7 @@ class ControlledHistory extends React.Component {
         // history.listen to let the app synchronize with us (which it MUST do,
         // it must always accept a 'SYNC' action location into its state)
         this.syncingReplace = true
-        this.props.history.replace(location.path, location.state)
+        this.props.history.replace(location)
       } else {
         if (stateIndex === -1) {
           // playing whack-a-mole here D: after we pop off the last key a
