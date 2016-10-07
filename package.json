@@ -1,6 +1,6 @@
 {
   "name": "react-history",
-  "version": "0.14.1",
+  "version": "0.15.0",
   "description": "Manage session history with React",
   "repository": "ReactTraining/react-history",
   "author": "Michael Jackson",
