@@ -14,7 +14,7 @@
     "release": "node ./scripts/release.js",
     "test": "npm run lint && karma start",
     "lint": "eslint modules",
-    "start": "webpack-dev-server --config example/webpack.config.js --inline --content-base example/build"
+    "start": "webpack-dev-server --config experimental-tests/webpack.config.js --inline --content-base example/build"
   },
   "dependencies": {
     "history": "^4.3.0"
