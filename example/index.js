@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import ControlledHistory from '../modules/ControlledHistory'
+import ControlledHistory from '../modules/ControlledHistoryExperimental'
 import createBrowserHistory from 'history/createBrowserHistory'
 
 class Link extends React.Component {
@@ -24,7 +24,7 @@ const history = createBrowserHistory()
 class App extends React.Component {
 
   state = {
-    location: history.getCurrentLocation(),
+    location: history.location,
     action: 'POP'
   }
 
@@ -53,7 +53,7 @@ class App extends React.Component {
             <pre>{JSON.stringify(this.state, null, 2)}</pre>
             <button onClick={() => {
               this.setState({
-                location: { path: '/three' },
+                location: { pathname: '/three' },
                 action: 'PUSH'
               })
             }}>Go to /three</button>
