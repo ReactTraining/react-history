@@ -37,7 +37,6 @@ class ControlledHistory extends React.Component {
     const shouldRestoreKeys = !!location.key
     this.updatingFromHistoryChange = false
     this.syncingHistory = false
-    this.syncingReplace = false
     this.keys = shouldRestoreKeys ? props.restoreKeys() : initialKeys
     this.setupHistory()
     this.state = {
@@ -48,7 +47,7 @@ class ControlledHistory extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (
-      !this.syncingReplace &&
+      !this.syncingHistory &&
       !this.updatingFromHistoryChange &&
       !locationsAreEqual(
         nextProps.location,
@@ -76,11 +75,10 @@ class ControlledHistory extends React.Component {
     this.props.history.listen((location, action) => {
       this.storeKey(location.key, action)
       this.updatingFromHistoryChange = true // must come before onChange!
-      if (!this.syncingHistory) {
-        this.props.onChange(location, action)
-      }
-      if (this.syncingReplace) {
+      if (this.syncingHistory) {
         this.props.onChange(location, 'SYNC')
+      } else {
+        this.props.onChange(location, action)
       }
       this.setState({ location, action }, () => {
         this.updatingFromHistoryChange = false
@@ -102,15 +100,6 @@ class ControlledHistory extends React.Component {
       const stateIndex = this.keys.indexOf(stateLocation.key)
       const delta = index - stateIndex
       if (stateAction === 'REPLACE') {
-        // Gah! the app is now going to have the right path, the right number
-        // of entries in the history, the right index in the history, but not
-        // the right key :(.
-        //
-        // Once the browser replaces, that's it!  we can't stop it, and we
-        // can't ever get that location back.  So we'll call props.onChange in
-        // history.listen to let the app synchronize with us (which it MUST do,
-        // it must always accept a 'SYNC' action location into its state)
-        this.syncingReplace = true
         this.props.history.replace(location)
       } else {
         if (stateIndex === -1) {

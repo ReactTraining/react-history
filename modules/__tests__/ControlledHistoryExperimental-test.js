@@ -567,6 +567,7 @@ describe('ControlledHistory', () => {
         history: createMemoryHistory({ initialEntries: [ '/' ] }),
         steps: [
           ({ history }) => {
+            // forward
             setTimeout(() => {
               history.push(paths[1])
             }, 0)
@@ -575,6 +576,7 @@ describe('ControlledHistory', () => {
           () => {},
 
           ({ history }) => {
+            // forward
             setTimeout(() => {
               history.push(paths[2])
             }, 0)
@@ -587,6 +589,7 @@ describe('ControlledHistory', () => {
             const { entries, index } = history
             expect(entries.length).toBe(3)
             expect(index).toBe(expectedIndex)
+            // click back button
             setTimeout(() => {
               component.setState({
                 location: entries[index - 1],
@@ -602,6 +605,7 @@ describe('ControlledHistory', () => {
             expect(index).toBe(expectedIndex)
             expect(entries[index].pathname).toEqual(paths[expectedIndex])
             expect(entries[index].pathname).toEqual(state.location.pathname)
+            // programmatically pass in one location ahead of the current one
             setTimeout(() => {
               component.setState({
                 location: entries[index + 1],
@@ -609,6 +613,8 @@ describe('ControlledHistory', () => {
               })
             }, 0)
           },
+
+          () => {},
 
           ({ history, state }) => {
             const expectedIndex = 2
