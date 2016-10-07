@@ -1,5 +1,5 @@
 import expect from 'expect'
-import ControlledHistory from '../ControlledHistory'
+import ControlledHistory from '../ControlledHistoryExperimental'
 import React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import createMemoryHistory from 'history/createMemoryHistory'

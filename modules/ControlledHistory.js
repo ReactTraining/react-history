@@ -2,38 +2,7 @@ import React, { PropTypes } from 'react'
 import { historyContext as historyContextType } from './PropTypes'
 import { locationsAreEqual } from './LocationUtils'
 
-// intitial key is `null` because JSON.stringify turns undefined into null, and
-// we use this value as the "initial key"
-const initialKeys = [ null ]
-
-const IS_DOM = typeof window !== 'undefined'
-
-const findKeyIndex = (keys, key) => (
-  // switchup `undefined` to `null` because that's what JSON.stringify does
-  // when we persist to sessionStorage
-  keys.indexOf(key || null)
-)
-
-const restoreKeys = () => {
-  if (IS_DOM) {
-    try {
-      return JSON.parse(sessionStorage.ReactRouterKeys)
-    } catch(e) {
-      // couldn't find them, so send the default
-      return initialKeys
-    }
-  } else {
-    return initialKeys
-  }
-}
-
-const saveKeys = (keys) => {
-  if (IS_DOM) {
-    try {
-      sessionStorage.ReactRouterKeys = JSON.stringify(keys)
-    } catch(e) {} // eslint-disable-line
-  }
-}
+const initialKeys = [ undefined ]
 
 class ControlledHistory extends React.Component {
 
@@ -52,8 +21,8 @@ class ControlledHistory extends React.Component {
   }
 
   static defaultProps = {
-    restoreKeys,
-    saveKeys
+    restoreKeys: () => initialKeys,
+    saveKeys: () => {}
   }
 
   getChildContext() {
@@ -65,11 +34,11 @@ class ControlledHistory extends React.Component {
   constructor(props) {
     super(props)
     const location = props.history.location
-    const cameBackFromOtherDomain = !!location.key
+    const shouldRestoreKeys = !!location.key
     this.updatingFromHistoryChange = false
     this.syncingHistory = false
     this.syncingReplace = false
-    this.keys = cameBackFromOtherDomain ? props.restoreKeys() : initialKeys
+    this.keys = shouldRestoreKeys ? props.restoreKeys() : initialKeys
     this.setupHistory()
     this.state = {
       location,
@@ -89,10 +58,10 @@ class ControlledHistory extends React.Component {
       this.syncingHistory = true
       const { history } = this.props
       const { action, location } = nextProps
-      const nextIndex = findKeyIndex(this.keys, location.key)
+      const nextIndex = this.keys.indexOf(location.key)
       if (location.key && nextIndex !== -1) {
         // we've been here before
-        const currentIndex = findKeyIndex(this.keys, this.props.location.key)
+        const currentIndex = this.keys.indexOf(this.props.location.key)
         const delta = nextIndex - currentIndex
         history.go(delta)
       } else if (action === 'PUSH') {
@@ -129,8 +98,8 @@ class ControlledHistory extends React.Component {
     const { location:stateLocation, action:stateAction } = this.state
     if (!locationsAreEqual(location, stateLocation)) {
       this.syncingHistory = true
-      const index = findKeyIndex(this.keys, location.key)
-      const stateIndex = findKeyIndex(this.keys, stateLocation.key)
+      const index = this.keys.indexOf(location.key)
+      const stateIndex = this.keys.indexOf(stateLocation.key)
       const delta = index - stateIndex
       if (stateAction === 'REPLACE') {
         // Gah! the app is now going to have the right path, the right number
@@ -181,7 +150,6 @@ class ControlledHistory extends React.Component {
       action
     })
   }
-
 }
 
 export default ControlledHistory
