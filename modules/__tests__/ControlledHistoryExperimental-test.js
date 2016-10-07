@@ -73,7 +73,7 @@ const renderTestSequence = ({ history, steps }) => {
   render(<App/>, div)
 }
 
-describe.only('ControlledHistory', () => {
+describe('ControlledHistory', () => {
   describe('when the history calls back with a new location', () => {
     describe('and a location is "accepted"', () => {
       it('syncs state on history.push', (done) => {
