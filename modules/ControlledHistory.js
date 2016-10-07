@@ -58,17 +58,7 @@ class ControlledHistory extends React.Component {
 
   getChildContext() {
     return {
-      history: this.getHistoryContext()
-    }
-  }
-
-  getHistoryContext() {
-    const { action, location, history } = this.props
-
-    return {
-      action,
-      location,
-      ...history
+      history: this.props.history
     }
   }
 
@@ -184,7 +174,12 @@ class ControlledHistory extends React.Component {
   }
 
   render() {
-    return this.props.children(this.getHistoryContext())
+    const { history, location, action } = this.props
+    return this.props.children({
+      history,
+      location,
+      action
+    })
   }
 
 }

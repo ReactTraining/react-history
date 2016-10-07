@@ -58,7 +58,7 @@ const renderTestSequence = ({ history, steps }) => {
             }
           }}
         >
-          {(history) => (
+          {({ history }) => (
             <Assert
               history={history}
               component={this}
