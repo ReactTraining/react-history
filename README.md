@@ -1,12 +1,14 @@
 # react-history [![Travis][build-badge]][build] [![npm package][npm-badge]][npm]
 
-[build-badge]: https://img.shields.io/travis/ReactTraining/react-history/master.svg?style=flat-square
-[build]: https://travis-ci.org/ReactTraining/react-history
+[build-badge]: https://img.shields.io/travis/mjackson/react-history/master.svg?style=flat-square
+[build]: https://travis-ci.org/mjackson/react-history
 
 [npm-badge]: https://img.shields.io/npm/v/react-history.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/react-history
 
 [`react-history`](https://www.npmjs.com/package/react-history) provides tools to manage session history using [React](https://facebook.github.io/react). It's a thin wrapper around the [`history`](https://www.npmjs.com/package/history) package. In web browsers, this library also transparently manages changes to the URL which makes it easier for creators of single-page applications to support things like bookmarks and the back button.
+
+**Note:** This library is highly experimental.
 
 ## Installation
 

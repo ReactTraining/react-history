@@ -2,7 +2,7 @@
   "name": "react-history",
   "version": "0.15.1",
   "description": "Manage session history with React",
-  "repository": "ReactTraining/react-history",
+  "repository": "mjackson/react-history",
   "author": "Michael Jackson",
   "license": "MIT",
   "scripts": {
