@@ -19,10 +19,10 @@ Using [npm](https://www.npmjs.com/):
 Then with a module bundler like [webpack](https://webpack.github.io/), use as you would anything else:
 
 ```js
-// using an ES6 transpiler, like babel
+// using ES6 modules
 import { BrowserHistory } from 'react-history'
 
-// not using an ES6 transpiler
+// using CommonJS modules
 var BrowserHistory = require('react-history').BrowserHistory
 ```
 
@@ -217,10 +217,10 @@ If all the URLs in your app are relative to some other "base" URL, use the `base
 ```js
 // All URLs transparently have the "/the/base" prefix.
 <History basename="/the/base">
-{({ location }) => (
-  // When the URL is /the/base/home, location.pathname is just /home.
-  <p>The current pathname is {location.pathname}.</p>
-)}
+  {({ location }) => (
+    // When the URL is /the/base/home, location.pathname is just /home.
+    <p>The current pathname is {location.pathname}.</p>
+  )}
 </History>
 ```
 
