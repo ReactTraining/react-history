@@ -1,11 +1,19 @@
 import React, { PropTypes } from 'react'
 import {
-  historyContext as historyContextType
+  history as historyType
 } from './PropTypes'
 
 class Prompt extends React.Component {
+  static propTypes = {
+    when: PropTypes.bool,
+    message: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.string
+    ]).isRequired
+  }
+
   static contextTypes = {
-    history: historyContextType.isRequired
+    history: historyType.isRequired
   }
 
   static defaultProps = {
@@ -43,16 +51,6 @@ class Prompt extends React.Component {
 
   render() {
     return null
-  }
-}
-
-if (__DEV__) {
-  Prompt.propTypes = {
-    when: PropTypes.bool,
-    message: PropTypes.oneOfType([
-      PropTypes.func,
-      PropTypes.string
-    ]).isRequired
   }
 }
 

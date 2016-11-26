@@ -14,7 +14,7 @@ export const location = PropTypes.shape({
   key: PropTypes.string
 })
 
-export const historyContext = PropTypes.shape({
+export const history = PropTypes.shape({
   action: action.isRequired,
   location: location.isRequired,
   push: PropTypes.func.isRequired,

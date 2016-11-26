@@ -1,18 +1,9 @@
 import React, { PropTypes } from 'react'
 import createHashHistory from 'history/createHashHistory'
-import History from './History'
+import HistoryProvider from './HistoryProvider'
 
-const HashHistory = ({ children, ...historyOptions}) => (
-  <History
-    children={children}
-    createHistory={createHashHistory}
-    historyOptions={historyOptions}
-  />
-)
-
-if (__DEV__) {
-  HashHistory.propTypes = {
-    children: PropTypes.func.isRequired,
+class HashHistory extends React.Component {
+  static propTypes = {
     basename: PropTypes.string,
     getUserConfirmation: PropTypes.func,
     hashType: PropTypes.oneOf([
@@ -20,6 +11,20 @@ if (__DEV__) {
       'noslash',
       'slash'
     ])
+  }
+
+  componentWillMount() {
+    const { basename, getUserConfirmation, hashType } = this.props
+
+    this.history = createHashHistory({
+      basename,
+      getUserConfirmation,
+      hashType
+    })
+  }
+
+  render() {
+    return <HistoryProvider {...this.props} history={this.history}/>
   }
 }
 
