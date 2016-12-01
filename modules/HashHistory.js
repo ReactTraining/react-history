@@ -1,8 +1,6 @@
 import React, { PropTypes } from 'react'
 import createHashHistory from 'history/createHashHistory'
-import {
-  history as historyType
-} from './PropTypes'
+import ProviderHelpers from './ProviderHelpers'
 
 /**
  * Manages session history using window.location.hash.
@@ -16,21 +14,12 @@ class HashHistory extends React.Component {
       'noslash',
       'slash'
     ]),
-    children: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.func
-    ]).isRequired
+    ...ProviderHelpers.propTypes
   }
 
-  static childContextTypes = {
-    history: historyType.isRequired
-  }
+  static childContextTypes = ProviderHelpers.childContextTypes
 
-  getChildContext() {
-    return {
-      history: this.history
-    }
-  }
+  getChildContext = ProviderHelpers.getChildContext
 
   componentWillMount() {
     const { basename, getUserConfirmation, hashType } = this.props
@@ -41,26 +30,12 @@ class HashHistory extends React.Component {
       hashType
     })
 
-    // Do this here so we catch actions in cDM.
-    this.unlisten = this.history.listen(() => this.forceUpdate())
+    ProviderHelpers.componentWillMount.call(this)
   }
 
-  componentWillUnmount() {
-    this.unlisten()
-  }
+  componentWillUnmount = ProviderHelpers.componentWillUnmount
 
-  render() {
-    const { children } = this.props
-
-    if (typeof children !== 'function')
-      return React.Children.only(children)
-
-    return children({
-      action: this.history.action,
-      location: this.history.location,
-      history: this.history
-    })
-  }
+  render = ProviderHelpers.render
 }
 
 export default HashHistory

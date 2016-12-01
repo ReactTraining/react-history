@@ -1,8 +1,6 @@
 import React, { PropTypes } from 'react'
 import createMemoryHistory from 'history/createMemoryHistory'
-import {
-  history as historyType
-} from './PropTypes'
+import ProviderHelpers from './ProviderHelpers'
 
 /**
  * Manages session history using in-memory storage.
@@ -13,21 +11,12 @@ class MemoryHistory extends React.Component {
     initialEntries: PropTypes.array,
     initialIndex: PropTypes.number,
     keyLength: PropTypes.number,
-    children: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.func
-    ]).isRequired
+    ...ProviderHelpers.propTypes
   }
 
-  static childContextTypes = {
-    history: historyType.isRequired
-  }
+  static childContextTypes = ProviderHelpers.childContextTypes
 
-  getChildContext() {
-    return {
-      history: this.history
-    }
-  }
+  getChildContext = ProviderHelpers.getChildContext
 
   componentWillMount() {
     const { getUserConfirmation, initialEntries, initialIndex, keyLength } = this.props
@@ -39,26 +28,12 @@ class MemoryHistory extends React.Component {
       keyLength
     })
 
-    // Do this here so we catch actions in cDM.
-    this.unlisten = this.history.listen(() => this.forceUpdate())
+    ProviderHelpers.componentWillMount.call(this)
   }
 
-  componentWillUnmount() {
-    this.unlisten()
-  }
+  componentWillUnmount = ProviderHelpers.componentWillUnmount
 
-  render() {
-    const { children } = this.props
-
-    if (typeof children !== 'function')
-      return React.Children.only(children)
-
-    return children({
-      action: this.history.action,
-      location: this.history.location,
-      history: this.history
-    })
-  }
+  render = ProviderHelpers.render
 }
 
 export default MemoryHistory

@@ -1,8 +1,6 @@
 import React, { PropTypes } from 'react'
 import createBrowserHistory from 'history/createBrowserHistory'
-import {
-  history as historyType
-} from './PropTypes'
+import ProviderHelpers from './ProviderHelpers'
 
 /**
  * Manages session history using the HTML5 history API including
@@ -14,21 +12,12 @@ class BrowserHistory extends React.Component {
     forceRefresh: PropTypes.bool,
     getUserConfirmation: PropTypes.func,
     keyLength: PropTypes.number,
-    children: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.func
-    ]).isRequired
+    ...ProviderHelpers.propTypes
   }
 
-  static childContextTypes = {
-    history: historyType.isRequired
-  }
+  static childContextTypes = ProviderHelpers.childContextTypes
 
-  getChildContext() {
-    return {
-      history: this.history
-    }
-  }
+  getChildContext = ProviderHelpers.getChildContext
 
   componentWillMount() {
     const { basename, forceRefresh, getUserConfirmation, keyLength } = this.props
@@ -40,26 +29,12 @@ class BrowserHistory extends React.Component {
       keyLength
     })
 
-    // Do this here so we catch actions in cDM.
-    this.unlisten = this.history.listen(() => this.forceUpdate())
+    ProviderHelpers.componentWillMount.call(this)
   }
 
-  componentWillUnmount() {
-    this.unlisten()
-  }
+  componentWillUnmount = ProviderHelpers.componentWillUnmount
 
-  render() {
-    const { children } = this.props
-
-    if (typeof children !== 'function')
-      return React.Children.only(children)
-
-    return children({
-      action: this.history.action,
-      location: this.history.location,
-      history: this.history
-    })
-  }
+  render = ProviderHelpers.render
 }
 
 export default BrowserHistory
