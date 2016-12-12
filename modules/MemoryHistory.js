@@ -24,9 +24,7 @@ class MemoryHistory extends React.Component {
   }
 
   getChildContext() {
-    return {
-      history: this.history
-    }
+    return { history: this.history }
   }
 
   componentWillMount() {
@@ -53,11 +51,7 @@ class MemoryHistory extends React.Component {
     if (typeof children !== 'function')
       return React.Children.only(children)
 
-    return children({
-      action: this.history.action,
-      location: this.history.location,
-      history: this.history
-    })
+    return children(this.history)
   }
 }
 
