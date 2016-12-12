@@ -1,6 +1,6 @@
 {
   "name": "react-history",
-  "version": "0.16.1",
+  "version": "0.17.0",
   "description": "Manage session history with React",
   "repository": "mjackson/react-history",
   "author": "Michael Jackson",
