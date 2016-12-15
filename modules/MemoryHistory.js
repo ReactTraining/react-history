@@ -48,10 +48,11 @@ class MemoryHistory extends React.Component {
   render() {
     const { children } = this.props
 
-    if (typeof children !== 'function')
-      return React.Children.only(children)
-
-    return children(this.history)
+    return (
+      typeof children === 'function'
+        ? children(this.history)
+        : React.Children.only(children)
+    )
   }
 }
 
