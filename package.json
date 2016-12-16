@@ -17,7 +17,7 @@
     "start": "webpack-dev-server --config experimental-tests/webpack.config.js --inline --content-base example/build"
   },
   "dependencies": {
-    "history": "^4.3.0"
+    "history": "^4.5.0"
   },
   "peerDependencies": {
     "react": "15.x"
