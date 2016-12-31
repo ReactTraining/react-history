@@ -13,8 +13,7 @@
     "prepublish": "node ./scripts/build.js",
     "release": "node ./scripts/release.js",
     "test": "npm run lint && karma start",
-    "lint": "eslint modules",
-    "start": "webpack-dev-server --config experimental-tests/webpack.config.js --inline --content-base example/build"
+    "lint": "eslint modules"
   },
   "dependencies": {
     "history": "^4.5.0"
