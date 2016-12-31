@@ -20,33 +20,36 @@ class Prompt extends React.Component {
     when: true
   }
 
-  block() {
-    if (!this.teardownPrompt)
-      this.teardownPrompt = this.context.history.block(this.props.message)
+  enable(message) {
+    if (this.unblock)
+      this.unblock()
+
+    this.unblock = this.context.history.block(message)
   }
 
-  unblock() {
-    if (this.teardownPrompt) {
-      this.teardownPrompt()
-      this.teardownPrompt = null
+  disable() {
+    if (this.unblock) {
+      this.unblock()
+      this.unblock = null
     }
   }
 
   componentWillMount() {
     if (this.props.when)
-      this.block()
+      this.enable(this.props.message)
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.when) {
-      this.block()
+      if (!this.props.when || this.props.message !== nextProps.message)
+        this.enable(nextProps.message)
     } else {
-      this.unblock()
+      this.disable()
     }
   }
 
   componentWillUnmount() {
-    this.unblock()
+    this.disable()
   }
 
   render() {
