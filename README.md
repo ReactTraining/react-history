@@ -144,7 +144,8 @@ These components are called "action" components because they modify the URL. Whe
 For example, you could build a very simple `<Link>` component using a `<Push>`:
 
 ```js
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { Push } from 'react-history/Actions'
 
 const Link = React.createClass({

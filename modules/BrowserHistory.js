@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import createBrowserHistory from 'history/createBrowserHistory'
 import {
   history as historyType
