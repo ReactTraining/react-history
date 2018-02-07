@@ -8,9 +8,13 @@ export default (done) => {
 
   const steps = [
     ({ location }) => {
-      expect(location).toMatch({
+      const {hash, pathname, search, state} = location
+
+      expect({hash, pathname, search, state}).toMatch({
+        hash: '',
         pathname: '/',
-        key: undefined
+        search: '',
+        state: undefined
       })
 
       return <Push path="/hello" state={{ the: 'state' }}/>

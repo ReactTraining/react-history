@@ -16,11 +16,11 @@
     "lint": "eslint modules"
   },
   "dependencies": {
-    "history": "^4.5.0",
+    "history": "^4.7.2",
     "prop-types": "^15.6.0"
   },
   "peerDependencies": {
-    "react": "15.x"
+    "react": "16.x"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -47,8 +47,8 @@
     "karma-webpack": "^1.7.0",
     "mocha": "^3.0.2",
     "pretty-bytes": "^4.0.0",
-    "react": "^15.3.0",
-    "react-dom": "^15.3.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "readline-sync": "^1.4.4",
     "webpack": "1.13.1",
     "webpack-dev-server": "1.16.2"
