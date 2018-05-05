@@ -2,7 +2,7 @@
   "name": "react-history",
   "version": "0.18.2",
   "description": "Manage session history with React",
-  "repository": "mjackson/react-history",
+  "repository": "ReactTraining/react-history",
   "author": "Michael Jackson",
   "license": "MIT",
   "scripts": {
@@ -53,9 +53,5 @@
     "webpack": "1.13.1",
     "webpack-dev-server": "1.16.2"
   },
-  "keywords": [
-    "react",
-    "history",
-    "link"
-  ]
+  "keywords": ["react", "history", "link"]
 }
