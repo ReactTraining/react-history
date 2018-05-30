@@ -7,10 +7,10 @@ export default (done) => {
   let keyAfterPush
 
   const steps = [
-    ({ location }) => {
+    ({ location, entries }) => {
       expect(location).toMatch({
         pathname: '/',
-        key: undefined
+        key: entries ? /^[0-9a-z]+$/ : undefined
       })
 
       return <Push path="/hello" state={{ the: 'state' }}/>

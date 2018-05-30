@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
+import PropTypes from "prop-types"
 
-export const action = PropTypes.oneOf(["PUSH", "REPLACE", "POP"]);
+export const action = PropTypes.oneOf(["PUSH", "REPLACE", "POP"])
 
 export const location = PropTypes.shape({
   pathname: PropTypes.string.isRequired,
@@ -8,7 +8,7 @@ export const location = PropTypes.shape({
   hash: PropTypes.string.isRequired,
   state: PropTypes.object,
   key: PropTypes.string
-});
+})
 
 export const history = PropTypes.shape({
   action: action.isRequired,
@@ -20,4 +20,4 @@ export const history = PropTypes.shape({
   goForward: PropTypes.func.isRequired,
   canGo: PropTypes.func,
   block: PropTypes.func.isRequired
-});
+})
