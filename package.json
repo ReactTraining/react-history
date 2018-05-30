@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "node ./scripts/build.js",
-    "build-cjs": "babel ./modules -d . --ignore '__tests__'",
+    "build-cjs": "babel modules -d ./cjs --ignore '__tests__'",
     "build-umd": "webpack modules/index.js umd/react-history.js",
     "build-min": "webpack -p modules/index.js umd/react-history.min.js",
     "prepublish": "node ./scripts/build.js",
@@ -15,6 +15,8 @@
     "test": "npm run lint && karma start",
     "lint": "eslint modules"
   },
+  "files": ["umd", "cjs"],
+  "main": "cjs/index.js",
   "dependencies": {
     "history": "^4.5.0",
     "prop-types": "^15.6.0"

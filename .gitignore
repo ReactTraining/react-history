@@ -1,1 +1,6 @@
+.DS_Store
+npm-debug.log
+.npmrc
+node_modules
 umd
+cjs
