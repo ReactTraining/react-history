@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import createMemoryHistory from "history/createMemoryHistory";
-import { history as historyType } from "./PropTypes";
+import React from "react"
+import PropTypes from "prop-types"
+import createMemoryHistory from "history/createMemoryHistory"
+import { history as historyType } from "./PropTypes"
 
 /**
  * Manages session history using in-memory storage.
@@ -13,14 +13,14 @@ class MemoryHistory extends React.Component {
     initialIndex: PropTypes.number,
     keyLength: PropTypes.number,
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired
-  };
+  }
 
   static childContextTypes = {
     history: historyType.isRequired
-  };
+  }
 
   getChildContext() {
-    return { history: this.history };
+    return { history: this.history }
   }
 
   componentWillMount() {
@@ -29,30 +29,30 @@ class MemoryHistory extends React.Component {
       initialEntries,
       initialIndex,
       keyLength
-    } = this.props;
+    } = this.props
 
     this.history = createMemoryHistory({
       getUserConfirmation,
       initialEntries,
       initialIndex,
       keyLength
-    });
+    })
 
     // Do this here so we catch actions in cDM.
-    this.unlisten = this.history.listen(() => this.forceUpdate());
+    this.unlisten = this.history.listen(() => this.forceUpdate())
   }
 
   componentWillUnmount() {
-    this.unlisten();
+    this.unlisten()
   }
 
   render() {
-    const { children } = this.props;
+    const { children } = this.props
 
     return typeof children === "function"
       ? children(this.history)
-      : React.Children.only(children);
+      : React.Children.only(children)
   }
 }
 
-export default MemoryHistory;
+export default MemoryHistory
