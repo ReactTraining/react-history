@@ -10,7 +10,6 @@ export default (done) => {
     ({ location }) => {
       expect(location).toMatch({
         pathname: '/',
-        key: undefined
       })
 
       return <Push path="/hello" state={{ the: 'state' }}/>

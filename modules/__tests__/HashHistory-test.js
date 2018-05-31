@@ -104,6 +104,11 @@ describe('HashHistory', () => {
       const children = RenderTestSequences.PromptBlocksTheForwardButton(done)
       render(<HashHistory getUserConfirmation={decline} children={children}/>, node)
     })
+
+    it('updates the message', (done) => {
+      const children = RenderTestSequences.PromptUpdates(done)
+      render(<HashHistory getUserConfirmation={decline} children={children}/>, node)
+    })
   })
 
   describe('"hashbang" hash encoding', () => {

@@ -114,6 +114,11 @@ describe('BrowserHistory', () => {
       const children = RenderTestSequences.PromptBlocksTheForwardButton(done)
       render(<BrowserHistory getUserConfirmation={decline} children={children}/>, node)
     })
+
+    it('updates the message', (done) => {
+      const children = RenderTestSequences.PromptUpdates(done)
+      render(<BrowserHistory getUserConfirmation={decline} children={children}/>, node)
+    })
   })
 
   describe('inactive prompt', () => {

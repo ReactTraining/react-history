@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import createMemoryHistory from "history/createMemoryHistory";
+import { canUseDOM } from "history/DOMUtils";
 import { history as historyType } from "./PropTypes";
 
 /**
@@ -23,23 +24,29 @@ class MemoryHistory extends React.Component {
     return { history: this.history };
   }
 
-  componentWillMount() {
-    const {
-      getUserConfirmation,
-      initialEntries,
-      initialIndex,
-      keyLength
-    } = this.props;
+  constructor(props) {
+    super(props);
 
-    this.history = createMemoryHistory({
-      getUserConfirmation,
-      initialEntries,
-      initialIndex,
-      keyLength
-    });
+    if (canUseDOM) {
+      const {
+        getUserConfirmation,
+        initialEntries,
+        initialIndex,
+        keyLength
+      } = this.props;
+  
+      this.history = createMemoryHistory({
+        getUserConfirmation,
+        initialEntries,
+        initialIndex,
+        keyLength
+      });
 
-    // Do this here so we catch actions in cDM.
-    this.unlisten = this.history.listen(() => this.forceUpdate());
+      // Do this here so we catch actions in cDM.
+      this.unlisten = this.history.listen(() => this.forceUpdate());
+    } else {
+      this.history = {};
+    }
   }
 
   componentWillUnmount() {
