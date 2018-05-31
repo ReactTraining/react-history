@@ -90,6 +90,11 @@ describe('MemoryHistory', () => {
       const children = RenderTestSequences.PromptBlocksTheForwardButton(done)
       render(<MemoryHistory getUserConfirmation={decline} children={children}/>, node)
     })
+
+    it('updates the message', (done) => {
+      const children = RenderTestSequences.PromptUpdates(done)
+      render(<MemoryHistory getUserConfirmation={decline} children={children}/>, node)
+    })
   })
 
   describe('inactive prompt', () => {

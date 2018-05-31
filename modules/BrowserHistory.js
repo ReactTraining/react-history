@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import createBrowserHistory from "history/createBrowserHistory";
+import { canUseDOM } from "history/DOMUtils";
 import { history as historyType } from "./PropTypes";
 
 /**
@@ -24,23 +25,29 @@ class BrowserHistory extends React.Component {
     return { history: this.history };
   }
 
-  componentWillMount() {
-    const {
-      basename,
-      forceRefresh,
-      getUserConfirmation,
-      keyLength
-    } = this.props;
+  constructor(props) {
+    super(props);
 
-    this.history = createBrowserHistory({
-      basename,
-      forceRefresh,
-      getUserConfirmation,
-      keyLength
-    });
+    if (canUseDOM) {
+      const {
+        basename,
+        forceRefresh,
+        getUserConfirmation,
+        keyLength
+      } = this.props;
 
-    // Do this here so we catch actions in cDM.
-    this.unlisten = this.history.listen(() => this.forceUpdate());
+      this.history = createBrowserHistory({
+        basename,
+        forceRefresh,
+        getUserConfirmation,
+        keyLength
+      });
+
+      // Do this here so we catch actions in cDM.
+      this.unlisten = this.history.listen(() => this.forceUpdate());
+    } else {
+      this.history = {};
+    }
   }
 
   componentWillUnmount() {
